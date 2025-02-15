@@ -15,7 +15,7 @@ export default function Navbar(){
         })
     }, [])
     return (
-      <div className="sticky top-0 bg-black p-2" style={{top: scrolledUp ? 0 : -100 , transitionDuration: "400ms"}}>
+      <div className="sticky top-0 bg-black p-2" style={{top: scrolledUp ? 0 : -100 ,zIndex: 88 , transitionDuration: "400ms"}}>
         <div className="py-3 px-6 flex flex-row gap-3">
           <a href="" className="text-white">Who am I ?</a>
           <a href="" className="text-white">Languages</a>
