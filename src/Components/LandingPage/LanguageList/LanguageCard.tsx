@@ -1,7 +1,7 @@
 export default function LanguageCard(props: LanguageCardProps){
     const { color, imgName, level, name } = props;
     return(
-        <div className="p-2 basis-[200px] rounded-lg shadow-md border-2 border-gray-200">
+        <div className="p-2 basis-[200px] bg-white rounded-lg shadow-md border-2 border-gray-200">
             <div className="w-[200px] h-[200px] relative">
                 <img src={"/images/languages/"+imgName} className="p-2 w-full h-full" alt={name + " image"} />
             </div>
