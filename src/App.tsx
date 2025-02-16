@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import LandingPage from "./Components/LandingPage";
+import LandingPage from "./Pages/LandingPage";
 
 const App = () : React.ReactElement => {
 
