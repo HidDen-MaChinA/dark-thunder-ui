@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import React from "react";
 
-export default function ProjectSlider() {
+export default function ProjectSlider(props:{
+  setBackgroundImage: React.Dispatch<React.SetStateAction<string>>
+}) {
+  const {setBackgroundImage} = props
   const [selected, setSelected] = useState("project-slider-button-id-0");
   const projects: Project[] = [
     {
@@ -9,28 +12,33 @@ export default function ProjectSlider() {
       version: "1.0",
       stack: ["React JS", "Laravel 13", "MySql"],
       image: "instatdataview.png",
+      backgroundImage: "instatdataview.png"
     }, 
     {
       name: "desktop",
       version: "1.0",
       stack: ["React JS", "Laravel 13", "MySql"],
       image: "desktop.svg",
+      backgroundImage: "desktop.svg"
     },
   ];
   const [focusedProject, setFocusedProject] = useState<Project>(projects[0]);
+  useLayoutEffect(()=>{
+    setBackgroundImage(focusedProject.backgroundImage || "");
+  }, [focusedProject])
   return (
     <div>
       <div className="p-7 w-full flex-col flex items-center">
-        <div className="h-[400px] w-[400px] bg-[#131313] rounded-lg">
+        <div className="h-[300px] w-[300px] rounded-xl">
           <img
             src={"/images/projects/" + focusedProject.image}
             alt=""
-            className="w-full h-full shadow-lg rounded-lg"
+            className="w-full h-full shadow-lg rounded-xl"
           />
         </div>
         <p className="my-3 text-xl">{focusedProject.name}</p>
       </div>
-      <div className="flex flex-row gap-3 w-full p-3 bg-[#00000060]">
+      <div className="flex bg-white flex-row gap-3 w-full p-3">
         {projects.map((item, i) => (
           <ProjectSliderButton
             key={"project-slider-button-id-" + i}
