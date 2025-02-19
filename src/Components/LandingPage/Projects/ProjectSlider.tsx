@@ -2,6 +2,7 @@ import { useState } from "react";
 import React from "react";
 
 export default function ProjectSlider() {
+  const [selected, setSelected] = useState("project-slider-button-id-0");
   const projects: Project[] = [
     {
       name: "InstatDataView",
@@ -33,8 +34,11 @@ export default function ProjectSlider() {
         {projects.map((item, i) => (
           <ProjectSliderButton
             key={"project-slider-button-id-" + i}
+            id={"project-slider-button-id-" + i}
             project={item}
             setFocusedProject={setFocusedProject}
+            selected={"project-slider-button-id-"+i == selected}
+            setSelected={setSelected}
           />
         ))}
       </div>
@@ -45,12 +49,19 @@ export default function ProjectSlider() {
 function ProjectSliderButton(props: {
   project: Project;
   setFocusedProject: React.Dispatch<React.SetStateAction<Project>>;
+  selected: boolean,
+  id: string,
+  setSelected: React.Dispatch<React.SetStateAction<string>>
 }) {
-  const { project, setFocusedProject } = props;
+  const { project, setFocusedProject,id , setSelected, selected } = props;
   return (
     <div
       className="relative hover:brightness-50 rounded-lg w-[100px] h-[100px] bg-[#2e2e2e]"
+      style={{
+        border: selected ? "2px solid red" : ""
+      }}
       onClick={() => {
+        setSelected(id);
         setFocusedProject(project);
       }}
     >
