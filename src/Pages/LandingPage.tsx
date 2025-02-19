@@ -28,7 +28,7 @@ function LanguageListWrapper(props: HTMLAttributes<HTMLDivElement>){
 }
 
 function ProjectsWrapper(props: HTMLAttributes<HTMLDivElement>){
-    return <div className="p-0 m-0 text-white" {...props}/>
+    return <div className="p-0 m-0" {...props}/>
 }
 
 function ContactWrapper(props: HTMLAttributes<HTMLDivElement>){
