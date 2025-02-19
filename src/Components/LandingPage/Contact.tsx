@@ -40,7 +40,7 @@ export default function Contact (){
 function ContactInfo(props: ContactInfoProps){
     const {image, text, link} = props;
     return(
-        <a className="flex items-center gap-2 bg-[#1f1f1f] pr-3 rounded-lg" href={link && link}>
+        <a className="flex items-center gap-2 p-1 bg-[#ededed] pr-3 rounded-lg" href={link && link}>
             <div className="h-[40px] w-[40px]">
                 <img src={`/images/icons/${image}`} alt="" />
             </div>

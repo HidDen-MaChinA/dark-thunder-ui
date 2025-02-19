@@ -26,9 +26,11 @@ export default function LandingPage(){
 function LanguageListWrapper(props: HTMLAttributes<HTMLDivElement>){
     return <div className="p-0 m-0" {...props}/>
 }
-function ContactWrapper(props: HTMLAttributes<HTMLDivElement>){
-    return <div className="p-0 m-0 bg-black text-white" {...props}/>
-}
+
 function ProjectsWrapper(props: HTMLAttributes<HTMLDivElement>){
     return <div className="p-0 m-0 text-white" {...props}/>
+}
+
+function ContactWrapper(props: HTMLAttributes<HTMLDivElement>){
+    return <div className="p-0 m-0" {...props}/>
 }
