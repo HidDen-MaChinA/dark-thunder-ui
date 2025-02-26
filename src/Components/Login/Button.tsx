@@ -1,47 +1,47 @@
 import { useState } from "react";
 
 export default function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
-  const [innerDiv, setInnerDiv] = useState();
-  const [clickPosition, setClickPosition] = useState({x: 0,y: 0});
+  const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
   const [divStyle, setDivStyle] = useState<React.CSSProperties>({
     width: 0,
     height: 0,
     top: clickPosition.y,
     left: clickPosition.x,
   });
-  const buttonClickEventHandler = (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    console.log(clickPosition)
-    expandDiv(700)
+  const buttonClickEventHandler = () => {
+    console.log(clickPosition);
+    expandDiv(700);
   };
-  
-  const buttonHoverEventHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
-    const x = e.clientX - e.target.offsetLeft
-    const y = e.clientY - e.target.offsetTop
-    if(!(x > e.target.offsetLeft || y > e.target.offsetTop)){
-      setClickPosition({x:x, y:y})
+
+  const buttonHoverEventHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const target = e.target as HTMLElement;
+    const x = e.clientX - target.offsetLeft;
+    const y = e.clientY - target.offsetTop;
+    if (!(x > target.offsetLeft || y > target.offsetTop)) {
+      setClickPosition({ x: x, y: y });
     }
-    console.log(clickPosition)
-  }
+    console.log(clickPosition);
+  };
   const expandDiv = (transitionDuration: number) => {
-    const style : React.CSSProperties = {
+    const style: React.CSSProperties = {
       width: "200px",
       height: "200px",
       top: clickPosition.y,
       left: clickPosition.x,
       transitionDuration: transitionDuration + "ms",
-    }
+    };
     setDivStyle(style);
-    setTimeout(()=>{
+    setTimeout(() => {
       setDivStyle({
         width: 0,
         height: 0,
         backgroundColor: "black",
-        zIndex: "-1"
+        zIndex: "-1",
       });
-    },transitionDuration)
-  }
+    }, transitionDuration);
+  };
   return (
     <button
       {...props}
@@ -51,9 +51,9 @@ export default function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
     >
       <div
         className="absolute rounded-[50%] z-[10]"
-        style={{...divStyle, transform: "translate(-50%, -50%)",}}
+        style={{ ...divStyle, transform: "translate(-50%, -50%)" }}
       ></div>
-        Login
+      Login
     </button>
   );
 }
