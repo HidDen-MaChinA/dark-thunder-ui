@@ -1,0 +1,59 @@
+import { useState } from "react";
+
+export default function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
+  const [innerDiv, setInnerDiv] = useState();
+  const [clickPosition, setClickPosition] = useState({x: 0,y: 0});
+  const [divStyle, setDivStyle] = useState<React.CSSProperties>({
+    width: 0,
+    height: 0,
+    top: clickPosition.y,
+    left: clickPosition.x,
+  });
+  const buttonClickEventHandler = (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    console.log(clickPosition)
+    expandDiv(700)
+  };
+  
+  const buttonHoverEventHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
+    const x = e.clientX - e.target.offsetLeft
+    const y = e.clientY - e.target.offsetTop
+    if(!(x > e.target.offsetLeft || y > e.target.offsetTop)){
+      setClickPosition({x:x, y:y})
+    }
+    console.log(clickPosition)
+  }
+  const expandDiv = (transitionDuration: number) => {
+    const style : React.CSSProperties = {
+      width: "200px",
+      height: "200px",
+      top: clickPosition.y,
+      left: clickPosition.x,
+      transitionDuration: transitionDuration + "ms",
+    }
+    setDivStyle(style);
+    setTimeout(()=>{
+      setDivStyle({
+        width: 0,
+        height: 0,
+        backgroundColor: "black",
+        zIndex: "-1"
+      });
+    },transitionDuration)
+  }
+  return (
+    <button
+      {...props}
+      onClick={buttonClickEventHandler}
+      onMouseMove={buttonHoverEventHandler}
+      className="rounded-lg p-3 overflow-hidden my-6 py-2 w-full text-white hover:text-black bg-black hover:bg-transparent transition-[500ms] relative border-2 border-black"
+    >
+      <div
+        className="absolute rounded-[50%] z-[10]"
+        style={{...divStyle, transform: "translate(-50%, -50%)",}}
+      ></div>
+        Login
+    </button>
+  );
+}
