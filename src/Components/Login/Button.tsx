@@ -5,8 +5,8 @@ export default function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
   const [divStyle, setDivStyle] = useState<React.CSSProperties>({
     width: 0,
     height: 0,
-    top: clickPosition.y,
-    left: clickPosition.x,
+    backgroundColor: "black",
+    zIndex: "-1",
   });
   const buttonClickEventHandler = () => {
     console.log(clickPosition);
@@ -47,13 +47,13 @@ export default function Button(props: React.HTMLAttributes<HTMLButtonElement>) {
       {...props}
       onClick={buttonClickEventHandler}
       onMouseMove={buttonHoverEventHandler}
-      className="rounded-lg p-3 overflow-hidden my-6 py-2 w-full text-white hover:text-black bg-black hover:bg-transparent transition-[500ms] relative border-2 border-black"
+      className="rounded-lg p-3 overflow-hidden my-6 py-2 w-full text-white focus:bg-white focus:text-black hover:text-black bg-black hover:bg-transparent transition-[500ms] relative border-2 border-black"
     >
       <div
         className="absolute rounded-[50%] z-[10]"
         style={{ ...divStyle, transform: "translate(-50%, -50%)" }}
       ></div>
-      Login
+      {props.children}
     </button>
   );
 }
