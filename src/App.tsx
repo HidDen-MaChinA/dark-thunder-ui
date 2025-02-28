@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import LandingPage from "./Pages/LandingPage";
 import Login from "./Pages/Login";
+import Messages from "./Pages/Messages";
 
 const App = () : React.ReactElement => {
 
@@ -11,6 +12,7 @@ const App = () : React.ReactElement => {
       <Routes>
         <Route path="/" Component={LandingPage} ></Route>
         <Route path="/login" Component={Login} ></Route>
+        <Route path="/messages" Component={Messages} ></Route>
       </Routes>
     </BrowserRouter>
   );
