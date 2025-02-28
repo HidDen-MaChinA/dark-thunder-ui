@@ -3,21 +3,26 @@ import React, { useState } from "react"
 export type SidebarProps = {
     closedWidth: number
     openedWidth?: number
+    title: string
+    children?: React.ReactNode
+    sidebarStateModifier: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function Sidebar(props: SidebarProps){
-    const {closedWidth, openedWidth} = props;
+    const {closedWidth, title, children, openedWidth, sidebarStateModifier} = props;
     const [isOpened, setIsOpened] = useState(false);
     const [style, setStyle] = useState<React.CSSProperties>({
         width: closedWidth || "50px"
     });
     const sidebarMouseEnterEventHandler = () => {
         setStyle((_)=>({..._, width: openedWidth || "200px"}))
+        sidebarStateModifier(true)
         setIsOpened(true)
     }
 
     const sidebarMouseLeaveEventHandler = () => {
         setStyle((_)=>({..._, width: closedWidth || "50px"}))
+        sidebarStateModifier(false)
         setIsOpened(false)
     }
     return (
@@ -43,16 +48,15 @@ export default function Sidebar(props: SidebarProps){
                 opacity: isOpened ? 1 : 0,
               }}
             >
-              Messages
+              {title}
             </h1>
           </div>
           <div className="w-full flex justify-center">
             <hr className="w-[90%]"/>
           </div>
-          <div className="flex-1 overflow-y-auto">
-
+          <div className="flex-1 overflow-hidden">
+              {children}
           </div>
-          <div>something</div>
         </div>
       </div>
     );
