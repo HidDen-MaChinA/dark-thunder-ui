@@ -30,7 +30,7 @@ export default function Sidebar(props: SidebarProps){
         style={style}
         onMouseEnter={sidebarMouseEnterEventHandler}
         onMouseLeave={sidebarMouseLeaveEventHandler}
-        className="sticky transition-[700ms] left-0 top-[100px] h-[100vh] bg-black"
+        className="sticky transition-[700ms] top-0 left-0 h-[100vh] bg-black"
       >
         <div className="h-full flex flex-col justify-between">
           <div className="flex-1 overflow-hidden">
