@@ -2,23 +2,24 @@ import { useState } from "react";
 import Friend from "../Components/Messages/Friend";
 import Sidebar from "../Components/Messages/Sidebar";
 import Topbar from "../Components/Messages/Topbar";
-import Modal from "../Components/Modal";
+import Warning from "../Components/Messages/Warning";
+import Discussions from "../Components/Messages/Discussions";
+import InputBar from "../Components/Messages/InputBar";
 
-export default function Messages(){
-    const [isOpened, setIsOpened] = useState(false);
-    const arr = []
-    for (let i = 0; i < 15; i++) {
-        arr.push(i);
-    }
-    return (
-      <div className="w-[100vw] h-[100vh] overflow-hidden">
-        <Topbar title="something">
-          <div className="flex justify-end p-2 h-full items-center">
-            <Modal button={ <div className="h-[35px] w-[35px] bg-black rounded-full"></div> } >
-                <div className=""></div>
-            </Modal>
-          </div>
-        </Topbar>
+export default function Messages() {
+  const [isOpened, setIsOpened] = useState(false);
+  const arr = [];
+  for (let i = 0; i < 15; i++) {
+    arr.push(i);
+  }
+  return (
+    <div className="w-[100vw] flex flex-col h-[100vh] overflow-hidden">
+      <Topbar title="something">
+        <div className="flex bg-white justify-end p-2 h-full items-center">
+          <Warning message="are you sure you want to do that bro ?" />
+        </div>
+      </Topbar>
+      <div className="flex-1 flex relative">
         <Sidebar
           closedWidth={60}
           sidebarStateModifier={setIsOpened}
@@ -40,6 +41,15 @@ export default function Messages(){
             ))}
           </div>
         </Sidebar>
+        <div className="w-full flex-1 justify-between flex flex-col">
+          <div style={{flex: "1 1 0"}} className="overflow-auto mb-[50px]">
+            <Discussions />
+          </div>
+          <div className="sticky bottom-0 bg-white">
+            <InputBar />
+          </div>
+        </div>
       </div>
-    );
+    </div>
+  );
 }
