@@ -24,3 +24,18 @@ With DarkThunder you can:
 * Code syntaxe highlighting.
 * Send files, images, sounds and videos to a discussions (Restricted).
 * Real-time calls/video calls between 2 and a maximum of 250 discussion members.
+
+
+## Requirements
+You will need to atleast install Node 18 to install and run the project.
+
+## Installation
+To DarkThunder UI is a REACT + VITE project, to install the project you will need to open a terminal and go to the project directory then follow the instructions:
+
+* Install the dependencies
+
+    ```npm install```
+
+* Run the project in local
+
+    ```npm run dev```
