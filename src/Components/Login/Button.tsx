@@ -1,19 +1,17 @@
 import { useState } from "react";
 
 type ButtonProps = {
-  effectColor?: string
-  color?: string
-  textcolor?: string
   width?: string
+  inverted?: boolean
 }
 
 export default function Button(props: React.HTMLAttributes<HTMLButtonElement> & ButtonProps) {
-  const { effectColor, width, color, textcolor} = props;
+  const { width, inverted} = props;
   const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
   const [divStyle, setDivStyle] = useState<React.CSSProperties>({
     width: 0,
     height: 0,
-    backgroundColor: effectColor || "black",
+    backgroundColor: inverted ? "white":"black",
     zIndex: "-1",
   });
   const buttonClickEventHandler = () => {
@@ -25,8 +23,8 @@ export default function Button(props: React.HTMLAttributes<HTMLButtonElement> & 
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     const target = e.target as HTMLElement;
-    const x = e.clientX - target.offsetLeft;
-    const y = e.clientY - target.offsetTop;
+    const x = e.pageX - target.offsetLeft;
+    const y = e.pageY - target.offsetTop;
     if (!(x > target.offsetLeft || y > target.offsetTop)) {
       setClickPosition({ x: x, y: y });
     }
@@ -45,7 +43,7 @@ export default function Button(props: React.HTMLAttributes<HTMLButtonElement> & 
       setDivStyle({
         width: 0,
         height: 0,
-        backgroundColor: effectColor || "black",
+        backgroundColor: inverted ? "white" : "black",
         zIndex: "-1",
       });
     }, transitionDuration);
@@ -55,9 +53,14 @@ export default function Button(props: React.HTMLAttributes<HTMLButtonElement> & 
       {...props}
       onClick={buttonClickEventHandler}
       onMouseMove={buttonHoverEventHandler}
-      className="rounded-lg p-3 overflow-hidden my-6 py-2 text-white focus:bg-white focus:text-black hover:text-black bg-black hover:bg-transparent transition-[500ms] relative border-2 border-black"
+      className={
+        `
+          rounded-lg p-3 overflow-hidden py-2
+          ${inverted ? "text-black bg-white border-black focus:bg-black hover:bg-black" : "text-white focus:border-black hover:border-black bg-black hover:text-black focus:text-black focus:bg-white hover:bg-white"}
+        hover:bg-transparent transition-[500ms] relative border border-transparent`
+      }
       style={{
-        width: width || "100%"
+        width: width || "100%",
       }}
     >
       <div
