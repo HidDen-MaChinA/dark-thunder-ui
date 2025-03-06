@@ -20,10 +20,10 @@ export default function Warning(props: WarningProps){
           </div>
           <hr className="w-[90%]"/>
           <div className="w-full gap-3 flex justify-end">
-            <Button width="max-content" effectColor="green">
+            <Button width="max-content" inverted>
               YES !
             </Button>
-            <Button width="max-content" effectColor="red">
+            <Button width="max-content">
               NO !!!
             </Button>
           </div>
