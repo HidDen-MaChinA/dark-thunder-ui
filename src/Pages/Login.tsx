@@ -51,9 +51,11 @@ export default function Login() {
               onChange={passwordChangeEventHandler}
               style={{ border: password.ok ? "" : "1px solid red" }}
             />
-            <Button>
-              Submit
-            </Button>
+            <div className="p-3">
+              <Button>
+                Submit
+              </Button>
+            </div>
           </div>
         </div>
       </div>
