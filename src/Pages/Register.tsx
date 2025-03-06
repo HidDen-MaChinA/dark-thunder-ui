@@ -26,17 +26,17 @@ export default function Register() {
   return (
     <div>
       <div className="flex flex-row h-[100vh] w-[100vw]">
-        <div className="w-1/2 flex justify-center items-center">
+        <div className="w-1/2 bg-black flex justify-center items-center">
           <div className="items-center flex flex-col">
             <div className="w-[100px] h-[100px] relative">
-              <img src="/images/icons/source-code.svg" alt="" className="w-full h-full" />
+              <img src="/images/icons/source-code-white.svg" alt="" className="w-full h-full" />
             </div>
-            <h1 className="w-full text-center text-xl">Dark Thunder</h1>
+            <h1 className="w-full text-center text-xl text-white">Dark Thunder</h1>
           </div>
         </div>
-        <div className="w-1/2 flex bg-black justify-center items-center">
+        <div className="w-1/2 flex justify-center items-center">
           <div className="px-5 bg-white shadow-lg rounded-xl flex-col shadow-gray-600 flex gap-2">
-            <h1 className="text-2xl w-full text-center py-4">Login</h1>
+            <h1 className="text-2xl w-full text-center py-4">Register</h1>
             <p>Email</p>
             <input
               type="text"
@@ -44,9 +44,11 @@ export default function Register() {
               onChange={emailChangeEventHandler}
               style={{ border: email.ok ? "" : "1px solid red" }}
             />
-            <Button>
-              Register
-            </Button>
+            <div className="p-3">
+              <Button >
+                Register
+              </Button>
+            </div>
           </div>
         </div>
       </div>
