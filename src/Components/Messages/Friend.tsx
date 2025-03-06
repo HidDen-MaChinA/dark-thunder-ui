@@ -31,7 +31,7 @@ export default function Friend(props: FriendProps) {
         }
     }, [expanded])
     return (
-        <div className="w-full py-2 flex items-center relative rounded-xl hover:brightness-150 transition-[500ms] hover:bg-[#1f1f1f]">
+        <div className="w-full py-2 flex shadow-md items-center relative rounded-xl hover:brightness-150 transition-[500ms] hover:bg-[#1f1f1f]">
             <div className="rounded-full w-[40px] absolute left-[5px] block h-[40px] bg-white">
                 <img src="" alt="" className="w-full h-full rounded-full" />
                 <div className="bg-black right-0 bottom-[-5px] p-1 rounded-full absolute">
