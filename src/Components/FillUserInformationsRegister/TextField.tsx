@@ -2,16 +2,17 @@ import React from "react"
 
 type TextFieldProps = {
     label?: string
-} & React.HTMLAttributes<HTMLInputElement>
+    type?: string
+} & React.InputHTMLAttributes<HTMLInputElement>
 
 export default function TextField(props: TextFieldProps){
-    const {label} = props
+    const {label, type} = props
     return (
         <div className="w-full">
             {
-                label && <p>{label}</p>
+                label && <p className="py-1">{label}</p>
             }
-            <input {...props} type="text" className="w-full" />
+            <input {...props} type={type || "text"} className="w-full p-2 bg-white text-black border rounded-xl" />
         </div>
     )
 }
