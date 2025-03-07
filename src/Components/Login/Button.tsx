@@ -55,9 +55,9 @@ export default function Button(props: React.HTMLAttributes<HTMLButtonElement> & 
       onMouseMove={buttonHoverEventHandler}
       className={
         `
-          rounded-lg p-3 overflow-hidden py-2
-          ${inverted ? "text-black bg-white border-black focus:bg-black hover:bg-black" : "text-white focus:border-black hover:border-black bg-black hover:text-black focus:text-black focus:bg-white hover:bg-white"}
-        hover:bg-transparent transition-[500ms] relative border border-transparent`
+          rounded-xl p-3 overflow-hidden py-2
+          ${inverted ? "text-black bg-white border-black focus:text-white focus:bg-black hover:text-white hover:bg-black" : "text-white focus:border-black hover:border-black bg-black hover:text-black focus:text-black focus:bg-white hover:bg-white"}
+        transition-[500ms] relative border`
       }
       style={{
         width: width || "100%",
