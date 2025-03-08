@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Friend from "../Components/Messages/Friend";
 import Sidebar from "../Components/Messages/Sidebar";
 import Topbar from "../Components/Messages/Topbar";
 import Warning from "../Components/Messages/Warning";
 import Discussions from "../Components/Messages/Discussions";
 import InputBar from "../Components/Messages/InputBar";
+import Context from "../AuthContext";
 
 export default function Messages() {
+  const currentUser = useContext(Context); 
   const [isOpened, setIsOpened] = useState(false);
   const arr = [];
   for (let i = 0; i < 15; i++) {
