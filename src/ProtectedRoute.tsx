@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { UserAuthentified } from "./@types/User";
-import { authClient } from "./Client/Auth";
+import { AuthProvider } from "./Providers/AuthProvider";
 import Context from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 export default function ProtectedRoute(props:{children?: React.ReactNode}) {
+  const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<UserAuthentified>();
   useEffect(()=>{
-    const token = sessionStorage.getItem("token")
+    const token = localStorage.getItem("dt-token-session-auth")
     if(token){
-        authClient.whoami(token).then((res)=>{
+        AuthProvider.whoami().then((res)=>{
             setCurrentUser(res)
         }).catch(()=>{
+            console.log("not allowed")
             //redirection
         })
+    }else{
+      navigate("/user/login");
     }
-  })
+  }, [])
   return (
     <>
     {

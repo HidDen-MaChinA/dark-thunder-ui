@@ -14,18 +14,20 @@ const App = (): React.ReactElement => {
     <BrowserRouter>
       <Routes>
         <Route path="/" Component={LandingPage}></Route>
-        <Route path="/login" Component={Login}></Route>
-        <Route path="/register" Component={Register}></Route>
+
+        <Route path="/user/login" Component={Login}></Route>
+        <Route path="/user/register" Component={Register}></Route>
         <Route
-          path="/register/emailValidation"
+          path="/user/register/email/validation"
           Component={EmailValidation}
         ></Route>
         <Route
-          path="/register/fillUserInfo"
+          path="/user/register/finalisation"
           Component={FillUserInformationRegister}
         ></Route>
+
         <Route
-          path="/messages"
+          path="/discussions"
           Component={() => (
             <ProtectedRoute>
               <Messages />

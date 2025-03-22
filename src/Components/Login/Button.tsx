@@ -5,7 +5,7 @@ type ButtonProps = {
   inverted?: boolean
 }
 
-export default function Button(props: React.HTMLAttributes<HTMLButtonElement> & ButtonProps) {
+export default function Button(props: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & ButtonProps) {
   const { width, inverted} = props;
   const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
   const [divStyle, setDivStyle] = useState<React.CSSProperties>({
@@ -15,7 +15,6 @@ export default function Button(props: React.HTMLAttributes<HTMLButtonElement> & 
     zIndex: "-1",
   });
   const buttonClickEventHandler = () => {
-    console.log(clickPosition);
     expandDiv(700);
   };
 
@@ -28,7 +27,6 @@ export default function Button(props: React.HTMLAttributes<HTMLButtonElement> & 
     if (!(x > target.offsetLeft || y > target.offsetTop)) {
       setClickPosition({ x: x, y: y });
     }
-    console.log(clickPosition);
   };
   const expandDiv = (transitionDuration: number) => {
     const style: React.CSSProperties = {

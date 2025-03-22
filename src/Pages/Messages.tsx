@@ -8,7 +8,7 @@ import InputBar from "../Components/Messages/InputBar";
 import Context from "../AuthContext";
 
 export default function Messages() {
-  const currentUser = useContext(Context); 
+  const currentUser = useContext(Context);
   const [isOpened, setIsOpened] = useState(false);
   const arr = [];
   for (let i = 0; i < 15; i++) {
@@ -44,7 +44,7 @@ export default function Messages() {
           </div>
         </Sidebar>
         <div className="w-full flex-1 justify-between flex flex-col">
-          <div style={{flex: "1 1 0"}} className="overflow-auto mb-[50px]">
+          <div style={{ flex: "1 1 0" }} className="overflow-auto mb-[50px]">
             <Discussions />
           </div>
           <div className="sticky bottom-0 bg-white">
