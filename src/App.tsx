@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import LandingPage from "./Pages/LandingPage";
 import Login from "./Pages/Login";
-import Messages from "./Pages/Messages";
+import Messages from "./Pages/Discussions";
 import Register from "./Pages/Register";
 import EmailValidation from "./Pages/EmailValidation";
 import FillUserInformationRegister from "./Pages/FillUserInformationsRegister";

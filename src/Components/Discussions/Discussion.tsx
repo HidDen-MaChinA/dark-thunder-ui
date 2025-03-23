@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react"
 
-export type FriendProps = {
+export type DiscussionPropsType= {
     expanded: boolean
     name: string
     lastMessage?: string
     profilePicture?: string
     online?: boolean
-}
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
 
-export default function Friend(props: FriendProps) { 
+export default function Discussion(props: DiscussionPropsType) { 
     const { expanded, name, lastMessage, online } = props;
     const [style, setStyle] = useState<React.CSSProperties>({});
     useEffect(()=>{
@@ -31,14 +31,14 @@ export default function Friend(props: FriendProps) {
         }
     }, [expanded])
     return (
-        <div className="w-full py-2 flex shadow-md items-center relative rounded-xl hover:brightness-150 transition-[500ms] hover:bg-[#1f1f1f]">
+        <div {...props} className="w-full py-2 flexitems-center relative rounded-xl transition-[500ms] hover:bg-gray-100">
             <div className="rounded-full w-[40px] absolute left-[5px] block h-[40px] bg-white">
-                <img src="" alt="" className="w-full h-full rounded-full" />
-                <div className="bg-black right-0 bottom-[-5px] p-1 rounded-full absolute">
+                <img src="" alt="" className="w-full border border-gray-400 h-full rounded-full" />
+                <div className="bg-gray-300 right-0 bottom-[-5px] p-1 rounded-full absolute">
                     <div className="rounded-full h-[10px] w-[10px]" style={{backgroundColor: online ? "green" : "red"}}></div>
                 </div>
             </div>
-            <div className="text-white px-2 flex-1 relative ml-[50px]" style={style}>
+            <div className="text-black px-2 flex-1 relative ml-[50px]" style={style}>
                 <h4 className="bold">{name}</h4>
                 <p className="text-gray-500 w-[200px] text-sm text-ellipsis whitespace-nowrap overflow-hidden">{lastMessage || name + " was added !"}</p>
             </div>

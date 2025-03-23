@@ -1,7 +1,7 @@
 import { DateNotifier } from "./DateNotifier";
 import Message from "./Message";
 
-export default function Discussions(){
+export default function Messages(){
     return (
         <div className="w-full flex flex-col h-full" >
             <div>

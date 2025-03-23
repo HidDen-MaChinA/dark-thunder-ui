@@ -8,7 +8,7 @@ type TopbarProps = {
 export default function Topbar(props: React.HTMLAttributes<HTMLDivElement> & TopbarProps){
     const { title , children} = props;
     return (
-        <div {...props} className="flex shadow-xl border-b sticky bg-white top-0 w-full">
+        <div {...props} className="flex shadow-md border-b sticky bg-white top-0 w-full">
             <h2 className="text-xl p-2 px-5">
                 {title}
             </h2>
