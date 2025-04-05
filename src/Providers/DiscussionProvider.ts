@@ -4,18 +4,18 @@ import { AxiosClient } from "../AxiosClient"
 type DiscussionProviderType= {
     create: (arg:{
        name: string,
-       messageRestrictionRegex?: string 
+       message_restriction_regex?: string 
     }) => Promise<Discussion>,
 
     update: (arg:{
         name: string,
         id: string,
-        messageRestrictionRegex?: string
+        message_restriction_regex?: string
     }) => Promise<number>,
     
     createDiscussionWithAnotherUser: (arg:{
-        userId: string,
-        discussionName: string
+        id: string,
+        discussion_name: string
     }) => Promise<Discussion>,
 
     getAllDiscussions: (arg:{
@@ -40,7 +40,7 @@ export const DiscussionProvider : DiscussionProviderType= {
     },
     
     getAllDiscussions: (arg)=>{
-        return AxiosClient.get(`/api/discussions/created?page=${arg.page}`).then(_=>_.data);
+        return AxiosClient.get(`/api/discussions?page=${arg.page}`).then(_=>_.data);
     },
 
 } 
