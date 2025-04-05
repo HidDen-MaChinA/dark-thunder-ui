@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import TextField from "../Components/FillUserInformationsRegister/TextField";
 import Button from "../Components/Login/Button";
 import { UserProvider } from "../Providers/UserProviders";
 import { useNavigate } from "react-router-dom";
+import TextField from "../Components/TextField";
 
-export default function FillUserInformationRegister() {
+export default function Finalisation() {
   const navigate = useNavigate();
   const [pfp, setPfp] = useState<string>();
   const [firstname, setFirstname] = useState<string>("");
