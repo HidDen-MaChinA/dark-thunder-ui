@@ -12,13 +12,13 @@ export default function Modal(props: DropdownProps) {
 
   return (
     <div className="relative flex flex-col">
-      <button
+      <label
         onClick={() => {
           setOpened(true);
         }}
       >
         {button}
-      </button>
+      </label>
 
       {opened && (
         <ReactPortal wrapperId="overlay">

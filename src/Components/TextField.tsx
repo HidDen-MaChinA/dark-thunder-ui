@@ -12,7 +12,7 @@ export default function TextField(props: TextFieldProps){
             {
                 label && <p className="py-1">{label}</p>
             }
-            <input {...props} type={type || "text"} className="w-full p-2 bg-white text-black border rounded-xl" />
+            <input {...props} type={type || "text"} className="w-full py-1 px-2 bg-white text-black border border-gray-400 rounded-lg" />
         </div>
     )
 }
