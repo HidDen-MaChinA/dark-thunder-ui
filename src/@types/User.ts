@@ -1,9 +1,16 @@
 export type CreateUser= {
+    id?:string
     password: string
-} & UserAuthentified
+    firstname: string
+    lastname:string
+    username: string
+    birthdate: string
+    pfp?: string
+    email: string
+}
 
 export type UserAuthentified = {
-    id?: string
+    id: string
     firstname: string
     lastname:string
     username: string
