@@ -15,6 +15,7 @@ export default function ProtectedRoute(props:{children?: React.ReactNode}) {
             setCurrentUser(res)
         }).catch(()=>{
             console.log("not allowed")
+            navigate("/user/login");
             //redirection
         })
     }else{

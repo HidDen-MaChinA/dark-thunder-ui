@@ -18,3 +18,9 @@ export type UserAuthentified = {
     pfp?: string
     email: string
 }
+
+export type SimplifiedUser = {
+    id: string
+    username: string
+    pfp?: string
+}

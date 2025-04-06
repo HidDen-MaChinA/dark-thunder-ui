@@ -6,8 +6,9 @@ import Login from "./Pages/Login";
 import Messages from "./Pages/Discussions";
 import Register from "./Pages/Register";
 import EmailValidation from "./Pages/EmailValidation";
-import FillUserInformationRegister from "./Pages/FillUserInformationsRegister";
 import ProtectedRoute from "./ProtectedRoute";
+import Finalisation from "./Pages/Finalisation";
+import CreateDiscussion from "./Pages/CreateDiscussion";
 
 const App = (): React.ReactElement => {
   return (
@@ -23,7 +24,7 @@ const App = (): React.ReactElement => {
         ></Route>
         <Route
           path="/user/register/finalisation"
-          Component={FillUserInformationRegister}
+          Component={Finalisation}
         ></Route>
 
         <Route
@@ -31,6 +32,15 @@ const App = (): React.ReactElement => {
           Component={() => (
             <ProtectedRoute>
               <Messages />
+            </ProtectedRoute>
+          )}
+        ></Route>
+
+        <Route
+          path="/discussion/create"
+          Component={() => (
+            <ProtectedRoute>
+              <CreateDiscussion />
             </ProtectedRoute>
           )}
         ></Route>
