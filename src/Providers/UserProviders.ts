@@ -5,6 +5,8 @@ export type UserClientType= {
     create: (arg:CreateUser) => Promise<UserAuthentified>
     update: (arg:CreateUser) => Promise<UserAuthentified>
     quit: (arg: UserQuit) => Promise<UserAuthentified>
+    getFriends: () => Promise<UserAuthentified[]>
+    getNonFriends: () => Promise<UserAuthentified[]>
 }
 
 export type UserQuit = {
@@ -33,4 +35,18 @@ export const UserProvider :UserClientType= {
         })
         return createdUser;
     },
+
+    getFriends: async ()=> {
+        const friends = await AxiosClient.get<UserAuthentified[]>("/api/user/friends").then((res)=>{
+            return res.data
+        })
+        return friends;
+    },
+
+    getNonFriends: async ()=> {
+        const nonFriends = await AxiosClient.get<UserAuthentified[]>("/api/user/nonFriends").then((res)=>{
+            return res.data
+        })
+        return nonFriends;
+    }
 } 
