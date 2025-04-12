@@ -43,7 +43,10 @@ export default function Button(
   return (
     <button
       {...props}
-      onClick={buttonClickEventHandler}
+      onClick={(e)=>{
+        buttonClickEventHandler()
+        props.onClick && props.onClick(e);
+      }}
       className={`
         rounded-xl p-3 overflow-hidden py-2 relative
         ${inverted ? "text-black bg-white border-black focus:text-white focus:bg-black hover:text-white hover:bg-black" : "text-white focus:border-black hover:border-black bg-black hover:text-black focus:text-black focus:bg-white hover:bg-white"}

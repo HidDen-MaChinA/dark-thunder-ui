@@ -11,6 +11,8 @@ import { Discussion as DiscussionType } from "../@types/Discussion";
 import { DiscussionProvider } from "../Providers/DiscussionProvider";
 import Loading from "../Components/Loading";
 import DiscussionQuickParametersModal from "../Components/Discussions/DiscussionQuickParametersModal";
+import TextField from "../Components/TextField";
+import AddFriendsTopBar from "../Components/Discussions/AddFriendsTopBar";
 
 export default function Discussions() {
   const currentUser = useContext(Context);
@@ -30,8 +32,11 @@ export default function Discussions() {
   return (
     <div className="w-[100vw] flex flex-col h-[100vh] overflow-hidden">
       <Topbar title="something">
-        <div className="flex bg-white justify-end p-2 h-full items-center">
-          <Warning message="are you sure you want to do that bro ?" />
+        <div className="flex bg-white flex-1 justify-center p-2 h-full items-center">
+          <AddFriendsTopBar />
+          <div className="absolute right-1">
+            <Warning message="are you sure you want to do that bro ?" />
+          </div>
         </div>
       </Topbar>
       <DiscussionQuickParametersModal isOpened={quickDiscussionParameterOpen} setIsOpened={setQuickDiscussionParameterOpen}  currentDiscussion={currentDiscussionToParameter} />

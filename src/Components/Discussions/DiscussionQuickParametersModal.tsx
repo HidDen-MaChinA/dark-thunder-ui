@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Discussion } from "../../@types/Discussion";
 import ReactPortal from "../ReactPortal";
 import TextField from "../TextField";
 import Button from "../Login/Button";
 import DiscussionAddFriend from "./DiscussionAddFriend";
+import { UserProvider } from "../../Providers/UserProviders";
 
 type DiscussionQuickParametersModalPropsType = {
     currentDiscussion?: Discussion | null
@@ -13,6 +14,9 @@ type DiscussionQuickParametersModalPropsType = {
 
 export default function DiscussionQuickParametersModal(props: DiscussionQuickParametersModalPropsType){
     const { currentDiscussion, isOpened, setIsOpened } = props;
+    useEffect(()=>{
+        UserProvider.getFriends().then(console.log);
+    }, [currentDiscussion])
     return (
         <div>
             {
