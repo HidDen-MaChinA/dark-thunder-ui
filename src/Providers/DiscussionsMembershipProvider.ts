@@ -10,6 +10,11 @@ type DiscussionMembershipProviderType = {
     permission: "read" | "write";
   }) => Promise<DiscussionMembership>,
 
+  delete: (arg: {
+    discussion_id: string;
+    user_id: string;
+  }) => Promise<{message: string}>,
+
   update: (arg: {
     id: string;
     discussion_id: string;
@@ -29,6 +34,10 @@ type DiscussionMembershipProviderType = {
 export const DiscussionMembershipProvider: DiscussionMembershipProviderType = {
   create: (arg) => {
     return AxiosClient.post("/api/discussion/member/create", arg).then((_) => _.data);
+  },
+  
+  delete: (arg) => {
+    return AxiosClient.post("/api/discussion/member/delete", arg).then((_) => _.data);
   },
 
   update: (arg) => {
