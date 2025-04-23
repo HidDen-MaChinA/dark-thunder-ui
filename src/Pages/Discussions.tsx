@@ -10,24 +10,56 @@ import CreateDiscussionButton from "../Components/Discussions/CreateDiscussionBu
 import { Discussion as DiscussionType } from "../@types/Discussion";
 import { DiscussionProvider } from "../Providers/DiscussionProvider";
 import Loading from "../Components/Loading";
-import DiscussionQuickParametersModal from "../Components/Discussions/DiscussionQuickParametersModal";
-import TextField from "../Components/TextField";
 import AddFriendsTopBar from "../Components/Discussions/AddFriendsTopBar";
 
 export default function Discussions() {
   const currentUser = useContext(Context);
   const [isOpened, setIsOpened] = useState(false);
-  const [discussions, setDiscussions] = useState<DiscussionType[] | null>(null);
+  const [discussions, setDiscussions] = useState<DiscussionType[]>([]);
   const [selectedDiscussion, setSelectedDiscussion] = useState<DiscussionType | null>(null)
-  const [currentDiscussionToParameter, setCurrentDiscussionToParameter] = useState<DiscussionType | null>(null);
-  const [quickDiscussionParameterOpen, setQuickDiscussionParameterOpen] = useState(false);
+  const [page, setPage] = useState({page: 1});
+  const [chargeMorePage, setChargeMorePage] = useState(true);
+  const [discussionsPromiseDone, setDiscussionsPromiseDone] = useState<boolean>(false);
   
 
+  const moreDiscussionButtonClickEventHandler = () => {
+    if(discussionsPromiseDone){
+      setPage(_=>({page: _.page + 1}))
+    }
+  }
+
   useEffect(()=>{
-    DiscussionProvider.getAllDiscussions({page: 1}).then((res)=>{
-      setDiscussions(res.items);
+    setDiscussionsPromiseDone(false)
+    chargeMorePage && DiscussionProvider.getAllDiscussions({page: page.page})
+    .then((res)=>{
+      if(res.items.length === 0){
+        throw new Error("nothing found")
+      }else{
+        if(discussions === null){
+          setDiscussions(res.items);
+          return res.items
+        }else{
+          setDiscussions(data => {
+            const items = res.items.filter((item)=>{
+              const found = data?.find((value)=>{
+                return item.id === value.id
+              })
+              return !found
+            })
+            return [...data, ...items]
+          })
+          return res.items
+        }
+      }
+    }).then(()=>{
+      setDiscussionsPromiseDone(true)
+      console.log("done")
+    }).catch((e)=>{
+      if(e.message === "nothing found"){
+        setChargeMorePage(false);
+      }
     });
-  }, [])
+  }, [page])
   
   return (
     <div className="w-[100vw] flex flex-col h-[100vh] overflow-hidden">
@@ -39,7 +71,6 @@ export default function Discussions() {
           </div>
         </div>
       </Topbar>
-      <DiscussionQuickParametersModal isOpened={quickDiscussionParameterOpen} setIsOpened={setQuickDiscussionParameterOpen}  currentDiscussion={currentDiscussionToParameter} />
       <div className="flex-1 flex relative">
         <Sidebar
           closedWidth={60}
@@ -48,23 +79,26 @@ export default function Discussions() {
           title="Messages"
         >
           <div className="relative justify-between flex overflow-hidden flex-col h-full">
-            <div className="py-2 mx-1 bg-white h-[400px] overflow-x-hidden"  style={{ flex: "1 1 0", overflowY: isOpened ? "auto" : "hidden" }}>
+            <div onScroll={(e)=>{console.log(e.detail)}} className="py-2 mx-1 bg-white h-[400px] overflow-x-hidden" style={{ flex: "1 1 0", overflowY: isOpened ? "auto" : "hidden" }}>
               {
                 discussions ? 
                 discussions.map((item) => (
                   <Discussion
+                    href={"/discussion/parameter/"+item.id}
                     onClick={()=>{
                       setSelectedDiscussion(item);
                     }}
                     expanded={isOpened}
-                    moreClickEventHandler={()=>{
-                      setCurrentDiscussionToParameter(item);
-                      setQuickDiscussionParameterOpen(true);
-                    }}
                     name={item.name}
                     key={item.id}
                   />
                 )) : <div>{isOpened && "No Discussion"}</div>
+              }
+              {
+                isOpened &&
+                <button onClick={moreDiscussionButtonClickEventHandler} className="w-full rounded-xl transition-[300ms] hover:bg-gray-300 p-3 flex justify-center items-center">
+                  <p className="text-lg">More</p>
+                </button>
               }
             </div>
             <div className="pt-3 px-2 bg-white h-[67px] w-full border-t border-t-gray-400">
