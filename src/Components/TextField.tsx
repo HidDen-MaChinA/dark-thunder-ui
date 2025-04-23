@@ -8,7 +8,7 @@ type TextFieldProps = {
 export default function TextField(props: TextFieldProps){
     const {label, type} = props
     return (
-        <div className="w-full">
+        <div className="w-full relative">
             {
                 label && <p className="py-1">{label}</p>
             }
