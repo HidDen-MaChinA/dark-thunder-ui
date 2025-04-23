@@ -15,11 +15,10 @@ export default function DiscussionAddFriend(
 ) {
   const { discussion } = props;
   const [friends, setFriends] = useState<SimplifiedUser[]>();
-  const arr = Array.of(1, 2, 3, 4, 5, 6, 6, 7, 8, 6, 7, 6, 7, 6);
   useEffect(() => {
-    UserProvider.getFriends().then((res) => {
+    UserProvider.getFriendsNotInDiscussion({discussionId: discussion.id}).then((res) => {
       setFriends(res);
-    });
+    })
   }, []);
   return (
     <div className="w-full flex flex-col h-full relative">
