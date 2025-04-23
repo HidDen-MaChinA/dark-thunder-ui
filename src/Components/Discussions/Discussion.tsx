@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Modal from "../Modal";
 
 export type DiscussionPropsType = {
   expanded: boolean;
   name: string;
+  href: string;
   lastMessage?: string;
   profilePicture?: string;
   online?: boolean;
-  moreClickEventHandler?: React.MouseEventHandler<HTMLButtonElement>;
 } & React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
@@ -20,7 +19,7 @@ export default function Discussion(props: DiscussionPropsType) {
     lastMessage,
     online,
     onClick,
-    moreClickEventHandler,
+    href
   } = props;
   const [style, setStyle] = useState<React.CSSProperties>({});
   const [hover, setHover] = useState(false);
@@ -57,7 +56,7 @@ export default function Discussion(props: DiscussionPropsType) {
     <div
       onMouseLeave={mouseLeaveEventHandler}
       onMouseEnter={mouseEnterEventHandler}
-      className="w-full py-2 flex items-center relative rounded-xl transition-[500ms] hover:bg-gray-100"
+      className="w-full py-2 flex items-center relative rounded-xl transition-[800ms] hover:bg-gray-200"
     >
       <div onClick={onClick}>
         <div className="rounded-full w-[40px] absolute left-[5px] block h-[40px] bg-white">
@@ -74,8 +73,8 @@ export default function Discussion(props: DiscussionPropsType) {
           style={style}
         >
           <div>
-            <h4 className="bold">{name}</h4>
-            <p className="text-gray-500 w-[170px] text-sm text-ellipsis whitespace-nowrap overflow-hidden">
+            <h4 className="bold w-[170px] text-ellipsis whitespace-nowrap overflow-hidden">{name}</h4>
+            <p className="text-gray-500 w-[150px] text-sm text-ellipsis whitespace-nowrap overflow-hidden">
               {lastMessage || "You can now send a message !"}
             </p>
           </div>
@@ -85,10 +84,12 @@ export default function Discussion(props: DiscussionPropsType) {
       <div className="flex justify-center items-center w-full h-full">
         <div>
             {hover && (
-              <button
-                onClick={moreClickEventHandler}
-                className="w-[30px] hover:bg-gray-300 transition-[500ms] h-[30px] rounded-full border"
-              ></button>
+              <div className="flex">
+                <a
+                  href={href}
+                  className="w-[30px] bg-blue-500 hover:bg-blue-600 transition-[500ms] h-[30px] rounded-full"
+                ></a>
+              </div>
             )}
         </div>
       </div>

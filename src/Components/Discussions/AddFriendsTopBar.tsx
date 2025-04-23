@@ -25,7 +25,7 @@ export default function AddFriendsTopBar(){
             setNonFriends(res);
             console.log(res)
         })
-    },[page])
+    },[page, isFocused])
 
     return (
       <div className="w-[400px] mr-[80px] relative z-20">
