@@ -9,6 +9,7 @@ import EmailValidation from "./Pages/EmailValidation";
 import ProtectedRoute from "./ProtectedRoute";
 import Finalisation from "./Pages/Finalisation";
 import CreateDiscussion from "./Pages/CreateDiscussion";
+import DiscussionParameter from "./Pages/DiscussionParameter";
 
 const App = (): React.ReactElement => {
   return (
@@ -32,6 +33,15 @@ const App = (): React.ReactElement => {
           Component={() => (
             <ProtectedRoute>
               <Messages />
+            </ProtectedRoute>
+          )}
+        ></Route>
+
+        <Route
+          path="/discussion/parameter/:discussionId"
+          Component={() => (
+            <ProtectedRoute>
+              <DiscussionParameter />
             </ProtectedRoute>
           )}
         ></Route>
