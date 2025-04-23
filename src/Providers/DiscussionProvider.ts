@@ -22,8 +22,11 @@ type DiscussionProviderType= {
         page: number
     }) => Promise<{
         items: Discussion[],
+        per_page: number,
         total: number
-    }>
+    }>,
+
+    getDiscussionById:(arg:{id:string}) => Promise<Discussion>
 }
 
 export const DiscussionProvider : DiscussionProviderType= {
@@ -42,5 +45,8 @@ export const DiscussionProvider : DiscussionProviderType= {
     getAllDiscussions: (arg)=>{
         return AxiosClient.get(`/api/discussions?page=${arg.page}`).then(_=>_.data);
     },
-
+    
+    getDiscussionById: (arg)=>{
+        return AxiosClient.get(`/api/discussion?id=${arg.id}`).then(_=>_.data);
+    }
 } 
