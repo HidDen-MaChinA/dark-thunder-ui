@@ -4,7 +4,6 @@ import { AddFriend } from "./AddFriend";
 import Button from "../Login/Button";
 import { UserProvider } from "../../Providers/UserProviders";
 import { SimplifiedUser } from "../../@types/User";
-import { DiscussionMembershipProvider } from "../../Providers/DiscussionsMembershipProvider";
 import { UserFriendshipProvider } from "../../Providers/UserFriendshipProvider";
 
 export default function AddFriendsTopBar(){
