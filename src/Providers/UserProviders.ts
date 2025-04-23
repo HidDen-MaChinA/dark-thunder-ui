@@ -7,6 +7,7 @@ export type UserClientType= {
     quit: (arg: UserQuit) => Promise<UserAuthentified>
     getFriends: () => Promise<UserAuthentified[]>
     getNonFriends: () => Promise<UserAuthentified[]>
+    getFriendsNotInDiscussion: (arg: {discussionId:string}) => Promise<UserAuthentified[]>
 }
 
 export type UserQuit = {
@@ -48,5 +49,10 @@ export const UserProvider :UserClientType= {
             return res.data
         })
         return nonFriends;
+    },
+
+    getFriendsNotInDiscussion: async (arg: {discussionId: string}) => {
+        const friends = await AxiosClient.get<UserAuthentified[]>(`/api/user/friends/notInDiscussion?discussion_id=${arg.discussionId}`).then(_=>_.data);
+        return friends;
     }
 } 
