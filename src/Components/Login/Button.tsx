@@ -10,7 +10,9 @@ export default function Button(
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > &
-    ButtonProps,
+    ButtonProps = {
+      inverted:false
+    }
 ) {
   const { width, inverted } = props;
   const [divStyle, setDivStyle] = useState<React.CSSProperties>({
@@ -42,7 +44,7 @@ export default function Button(
   };
   return (
     <button
-      {...props}
+      {...{...props, inverted: undefined}}
       onClick={(e)=>{
         buttonClickEventHandler()
         props.onClick && props.onClick(e);

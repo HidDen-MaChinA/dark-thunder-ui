@@ -20,10 +20,7 @@ type MessageProviderType= {
     getLatestMessages: (arg: {
         page: number,
         discussion_id: string
-    }) => Promise<{
-        items: Message[],
-        total: number
-    }>
+    }) => Promise<Message[]>
 
 }
 
@@ -41,6 +38,6 @@ export const MessageProvider : MessageProviderType= {
     },
 
     getLatestMessages: (arg)=>{
-        return AxiosClient.post(`/api/discussion/messages?page=${arg.page}&discussion_id=${arg.discussion_id}`, arg).then(_=>_.data);
+        return AxiosClient.get(`/api/discussion/messages?page=${arg.page}&discussion_id=${arg.discussion_id}`).then(_=>_.data);
     }
 } 

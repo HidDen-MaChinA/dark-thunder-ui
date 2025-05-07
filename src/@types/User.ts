@@ -19,6 +19,24 @@ export type UserAuthentified = {
     email: string
 }
 
+export type UserFriend= {
+    id: string
+    firstname: string
+    lastname:string
+    username: string
+    birthdate: string
+    pfp?: string
+    email: string
+    friendship_id: string
+}
+
+export type SimplifiedUserFriend = {
+    id: string
+    username: string
+    pfp?: string
+    friendship_id: string
+}
+
 export type SimplifiedUser = {
     id: string
     username: string

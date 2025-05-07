@@ -1,11 +1,11 @@
-import { CreateUser, UserAuthentified } from "../@types/User"
+import { CreateUser, UserAuthentified, UserFriend } from "../@types/User"
 import { AxiosClient } from "../AxiosClient"
 
 export type UserClientType= {
     create: (arg:CreateUser) => Promise<UserAuthentified>
     update: (arg:CreateUser) => Promise<UserAuthentified>
     quit: (arg: UserQuit) => Promise<UserAuthentified>
-    getFriends: () => Promise<UserAuthentified[]>
+    getFriends: () => Promise<UserFriend[]>
     getNonFriends: () => Promise<UserAuthentified[]>
     getFriendsNotInDiscussion: (arg: {discussionId:string}) => Promise<UserAuthentified[]>
 }
@@ -38,7 +38,7 @@ export const UserProvider :UserClientType= {
     },
 
     getFriends: async ()=> {
-        const friends = await AxiosClient.get<UserAuthentified[]>("/api/user/friends").then((res)=>{
+        const friends = await AxiosClient.get<UserFriend[]>("/api/user/friends").then((res)=>{
             return res.data
         })
         return friends;

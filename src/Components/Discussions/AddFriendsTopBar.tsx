@@ -47,7 +47,7 @@ export default function AddFriendsTopBar(){
                     pfp: nonFriend.pfp,
                   }}
                   onAddButtonClick={()=>{
-                    UserFriendshipProvider.create(nonFriend.id);
+                    UserFriendshipProvider.create({user_id: nonFriend.id});
                   }}
                 ></AddFriend>
               ))}

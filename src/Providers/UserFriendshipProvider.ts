@@ -23,7 +23,7 @@ export const UserFriendshipProvider : UserFriendshipProviderType = {
     },
 
     allow: (args)=>{
-        return AxiosClient.post<number>("/api/user/friendship/delete", args).then((res)=>{
+        return AxiosClient.post<number>("/api/user/friendship/allow", args).then((res)=>{
             return res.data
         })
     },
@@ -35,7 +35,7 @@ export const UserFriendshipProvider : UserFriendshipProviderType = {
     },
 
     getAllSent: (args)=>{
-        return AxiosClient.get<Friendship[]>(`/api/user/friendships/received?page=${args.page}`).then((res)=>{
+        return AxiosClient.get<Friendship[]>(`/api/user/friendships/sent?page=${args.page}`).then((res)=>{
             return res.data
         })
     }

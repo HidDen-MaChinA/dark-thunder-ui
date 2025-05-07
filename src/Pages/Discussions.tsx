@@ -11,6 +11,7 @@ import { Discussion as DiscussionType } from "../@types/Discussion";
 import { DiscussionProvider } from "../Providers/DiscussionProvider";
 import Loading from "../Components/Loading";
 import AddFriendsTopBar from "../Components/Discussions/AddFriendsTopBar";
+import { MessageProvider } from "../Providers/MessageProvider";
 
 export default function Discussions() {
   const currentUser = useContext(Context);
@@ -20,11 +21,22 @@ export default function Discussions() {
   const [page, setPage] = useState({page: 1});
   const [chargeMorePage, setChargeMorePage] = useState(true);
   const [discussionsPromiseDone, setDiscussionsPromiseDone] = useState<boolean>(false);
-  
+  const [messageValue, setMessageValue] = useState("");
 
   const moreDiscussionButtonClickEventHandler = () => {
     if(discussionsPromiseDone){
       setPage(_=>({page: _.page + 1}))
+    }
+  }
+
+  const handleSendMessage = () => {
+    if(selectedDiscussion){
+      MessageProvider.create({
+        discussion_id: selectedDiscussion.id,
+        value: messageValue
+      })
+    }else{
+      alert("select a discussion first")
     }
   }
 
@@ -64,11 +76,10 @@ export default function Discussions() {
   return (
     <div className="w-[100vw] flex flex-col h-[100vh] overflow-hidden">
       <Topbar title="something">
-        <div className="flex bg-white flex-1 justify-center p-2 h-full items-center">
-          <AddFriendsTopBar />
-          <div className="absolute right-1">
-            <Warning message="are you sure you want to do that bro ?" />
-          </div>
+        <div className="flex bg-white flex-1 justify-end gap-3 p-2 h-full items-center">
+          <a href="/user/friends/management" className="relative w-[40px] p-1 h-[40px] flex justify-center items-center rounded-full bg-blue-400">
+            <img src="/images/icons/contact-phone.svg" className="w-full h-full" alt="" />
+          </a>
         </div>
       </Topbar>
       <div className="flex-1 flex relative">
@@ -109,11 +120,11 @@ export default function Discussions() {
         <div className="w-full flex-1 justify-between flex flex-col">
           <div style={{ flex: "1 1 0" }} className="overflow-auto">
             <Loading loading={selectedDiscussion == null}>
-              <Messages currentUserId={currentUser.user.id} messages={[]} discussion={selectedDiscussion}/>
+              <Messages currentUserId={currentUser.user.id} discussion={selectedDiscussion}/>
             </Loading>
           </div>
           <div className="sticky bottom-0 bg-white">
-            <InputBar />
+            <InputBar onButtonClicked={handleSendMessage} value={messageValue} onChange={(e)=>{setMessageValue(e.target.value)}}/>
           </div>
         </div>
       </div>

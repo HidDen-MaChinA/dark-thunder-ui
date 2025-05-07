@@ -1,4 +1,5 @@
 import React from "react";
+import Warning from "./Warning";
 
 
 type TopbarProps = {
@@ -15,6 +16,9 @@ export default function Topbar(props: React.HTMLAttributes<HTMLDivElement> & Top
             <div className="flex-1">
                 {children}
             </div>
+              <div className="flex items-center px-2">
+                <Warning message="are you sure you want to do that bro ?" />
+              </div>
         </div>
     )
 }

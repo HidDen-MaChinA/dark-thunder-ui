@@ -10,6 +10,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Finalisation from "./Pages/Finalisation";
 import CreateDiscussion from "./Pages/CreateDiscussion";
 import DiscussionParameter from "./Pages/DiscussionParameter";
+import FriendsManagement from "./Pages/FriendsManagement";
 
 const App = (): React.ReactElement => {
   return (
@@ -51,6 +52,15 @@ const App = (): React.ReactElement => {
           Component={() => (
             <ProtectedRoute>
               <CreateDiscussion />
+            </ProtectedRoute>
+          )}
+        ></Route>
+
+        <Route
+          path="/user/friends/management"
+          Component={() => (
+            <ProtectedRoute>
+              <FriendsManagement />
             </ProtectedRoute>
           )}
         ></Route>

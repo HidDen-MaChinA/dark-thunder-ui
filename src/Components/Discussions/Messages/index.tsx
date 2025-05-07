@@ -1,16 +1,26 @@
+import { useEffect, useState } from "react";
 import { Discussion } from "../../../@types/Discussion";
 import { Message as MessageType } from "../../../@types/Message";
 import { DateNotifier } from "./DateNotifier";
 import Message from "./Message";
+import { MessageProvider } from "../../../Providers/MessageProvider";
 
 type MessagePropsType = {
-  messages: MessageType[];
   discussion: Discussion | null;
   currentUserId: string;
 };
 
 export default function Messages(props: MessagePropsType) {
-  const { messages, discussion, currentUserId } = props;
+  const { discussion, currentUserId } = props;
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  useEffect(()=>{
+    discussion &&
+    MessageProvider.getLatestMessages({
+      discussion_id: discussion.id,
+      page: 1
+    }).then(setMessages);
+  }, [discussion])
+
   return discussion ? (
     <div className="w-full flex flex-col h-full">
       <div>
