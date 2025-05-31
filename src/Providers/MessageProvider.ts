@@ -20,7 +20,7 @@ type MessageProviderType= {
     getLatestMessages: (arg: {
         page: number,
         discussion_id: string
-    }) => Promise<Message[]>
+    }) => Promise<{list:Message[], discussion_id: string}>
 
 }
 
@@ -37,7 +37,8 @@ export const MessageProvider : MessageProviderType= {
         return AxiosClient.post("/api/discussion/message/delete", arg).then(_=>_.data);
     },
 
-    getLatestMessages: (arg)=>{
-        return AxiosClient.get(`/api/discussion/messages?page=${arg.page}&discussion_id=${arg.discussion_id}`).then(_=>_.data);
+    getLatestMessages: async (arg)=>{
+        const list = await AxiosClient.get(`/api/discussion/messages?page=${arg.page}&discussion_id=${arg.discussion_id}`).then(_=>_.data);
+        return {list: list, discussion_id: arg.discussion_id}
     }
 } 

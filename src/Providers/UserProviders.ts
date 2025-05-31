@@ -1,3 +1,4 @@
+import { toFormData } from "axios"
 import { CreateUser, UserAuthentified, UserFriend } from "../@types/User"
 import { AxiosClient } from "../AxiosClient"
 
@@ -24,7 +25,12 @@ export const UserProvider :UserClientType= {
     },
 
     create: async (arg)=>{
-        const createdUser = await AxiosClient.post("/api/guest/user/create", arg).then((res)=>{
+        const formData = toFormData(arg);
+        const createdUser = await AxiosClient.post("/api/guest/user/create", formData, {
+            headers:{
+                "Content-Type":"multipart/form-data"
+            }
+        }).then((res)=>{
             return res.data
         })
         return createdUser;

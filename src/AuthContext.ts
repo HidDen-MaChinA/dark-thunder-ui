@@ -6,7 +6,16 @@ type AuthProviderContextType = {
 }
 
 const Context = React.createContext<AuthProviderContextType>({
-    user: { email: "", PFP: "", username: "" },
+  user: {
+    email: "",
+    pfp: "",
+    birthdate: "",
+    daily_discussions_token: "",
+    username: "",
+    firstname: "",
+    id: "",
+    lastname: ""
+  },
 });
 
 

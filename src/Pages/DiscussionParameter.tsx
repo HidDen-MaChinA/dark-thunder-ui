@@ -18,6 +18,7 @@ export default function DiscussionParameter() {
   const [shouldFetch, setShouldFetch] = useState([]);
   const [members, setMembers] = useState<SimplifiedUser[] | null>(null);
   const [friends, setFriends] = useState<SimplifiedUser[] | null>(null);
+  const [image, setImage] = useState<File | null | undefined>();
   const { discussionId } = useParams();
   useEffect(() => {
     if (discussionId === null) {
@@ -46,10 +47,10 @@ export default function DiscussionParameter() {
         <div className="">
           <div className="flex items-center">
           
-            <UpdateDiscussion setShouldFetch={setShouldFetch} currentDiscussion={currentDiscussion}/>
+            <UpdateDiscussion setImage={setImage} image={image} setShouldFetch={setShouldFetch} currentDiscussion={currentDiscussion}/>
             <div className="w-full relative flex-col flex items-center">
-              <div className="w-[350px] h-[350px] shadow-lg rounded-full border">
-                <img src="/images/icons/test.png" alt="" />
+              <div className="w-[350px] relative h-[350px] shadow-lg overflow-hidden rounded-full border">
+                <img className="absolute" src={image ? URL.createObjectURL(image) : currentDiscussion.image} alt="" />
               </div>
               <h1 className="text-4xl mt-5 text-[#2e2e2e]">
                 {currentDiscussion.name}
@@ -75,49 +76,66 @@ export default function DiscussionParameter() {
   );
 }
 
-function UpdateDiscussion(props: { currentDiscussion: Discussion, setShouldFetch: React.Dispatch<SetStateAction<never[]>> }) {
-  const { currentDiscussion, setShouldFetch } = props;
+function UpdateDiscussion(props: {
+  currentDiscussion: Discussion;
+  setShouldFetch: React.Dispatch<SetStateAction<never[]>>;
+  setImage: React.Dispatch<SetStateAction<File | null | undefined>>,
+  image?: File | null 
+}) {
+  const { image,setImage,currentDiscussion, setShouldFetch } = props;
   const [name, setName] = useState("");
   const [messagesRestrictionRegex, setMessagesRestrictionRegex] = useState("");
-  
+
   const submitEventHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     DiscussionProvider.update({
       id: currentDiscussion.id,
-      name: name,
-      message_restriction_regex: messagesRestrictionRegex
-    }).then(()=>{
-      setShouldFetch([])
-    })
-  }
+      name: name.length == 0 ? currentDiscussion.name : name,
+      message_restriction_regex: messagesRestrictionRegex.length == 0 ?currentDiscussion.message_restriction_regex : messagesRestrictionRegex,
+      image:image
+    }).then(() => {
+      setShouldFetch([]);
+    });
+  };
+
+  const onChangeEventhandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      setImage(files.item(0))
+    }
+  };
   return (
     <div className="p-3 ml-6 bg-white w-[400px] h-[300px] rounded-lg relative z-30 border">
       <form action="" onSubmit={submitEventHandler}>
-      <div className="flex">
-        <div className="flex-1">
-          <div className="w-full">
-            <TextField
-              label="Discussion name"
-              onChange={(e)=>{
-                setName(e.target.value)
-              }}
-              defaultValue={currentDiscussion.name}
-            ></TextField>
-            <TextField label="Discussion cover" type="file"></TextField>
-            <TextField
-              onChange={(e)=>{
-                setMessagesRestrictionRegex(e.target.value)
-              }}
-              placeholder="/something/g"
-              label="Messages restriction (regex)"
-              defaultValue={currentDiscussion.message_restriction_regex}
-            ></TextField>
-          </div>
-          <div className="mt-4">
-            <Button>Modify</Button>
+        <div className="flex">
+          <div className="flex-1">
+            <div className="w-full">
+              <TextField
+                label="Discussion name"
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+                defaultValue={currentDiscussion.name}
+              ></TextField>
+              <TextField
+                label="Discussion cover"
+                onChange={onChangeEventhandler}
+                type="file"
+              ></TextField>
+              <TextField
+                onChange={(e) => {
+                  setMessagesRestrictionRegex(e.target.value);
+                }}
+                placeholder="/something/g"
+                label="Messages restriction (regex)"
+                defaultValue={currentDiscussion.message_restriction_regex}
+              ></TextField>
+            </div>
+            <div className="mt-4">
+              <Button>Modify</Button>
+            </div>
           </div>
         </div>
-      </div>
       </form>
     </div>
   );

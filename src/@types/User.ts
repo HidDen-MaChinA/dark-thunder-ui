@@ -5,7 +5,7 @@ export type CreateUser= {
     lastname:string
     username: string
     birthdate: string
-    pfp?: string
+    pfp?: File | null
     email: string
 }
 
@@ -17,6 +17,7 @@ export type UserAuthentified = {
     birthdate: string
     pfp?: string
     email: string
+    daily_discussions_token:string
 }
 
 export type UserFriend= {

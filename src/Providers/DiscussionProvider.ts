@@ -1,3 +1,4 @@
+import { toFormData } from "axios"
 import { Discussion } from "../@types/Discussion"
 import { AxiosClient } from "../AxiosClient"
 
@@ -5,12 +6,14 @@ type DiscussionProviderType= {
     create: (arg:{
        name: string,
        message_restriction_regex?: string 
+       image?: File | null
     }) => Promise<Discussion>,
 
     update: (arg:{
         name: string,
         id: string,
         message_restriction_regex?: string
+        image?:File | null
     }) => Promise<number>,
     
     createDiscussionWithAnotherUser: (arg:{
@@ -31,11 +34,13 @@ type DiscussionProviderType= {
 
 export const DiscussionProvider : DiscussionProviderType= {
     create : (arg)=>{
-        return AxiosClient.post("/api/discussion/create", arg).then(_=>_.data);
+        const formData = toFormData(arg);
+        return AxiosClient.post("/api/discussion/create", formData).then(_=>_.data);
     },
 
     update : (arg)=>{
-        return AxiosClient.post("/api/discussion/update", arg).then(_=>_.data);
+        const formData = toFormData(arg);
+        return AxiosClient.post("/api/discussion/update", formData).then(_=>_.data);
     },
 
     createDiscussionWithAnotherUser: (arg)=>{

@@ -3,16 +3,19 @@ type MessageProps = {
     message?: string
     userName?: string
     pfp?: string
-    date: Date
+    date?: Date
 }
 
 export default function Message(props: MessageProps){
     const {own, message, pfp, userName, date} = props
-    let strBuilder = own ? "Sent at ": "Received at"
-    strBuilder += formatNumberToString(date.getHours()) + "h and ";
-    strBuilder += formatNumberToString(date.getMinutes()) + "min"
+        let strBuilder = "";
+    if(date){
+        strBuilder = own ? "Sent at ": "Received at"
+        strBuilder += formatNumberToString(date.getHours()) + "h and ";
+        strBuilder += formatNumberToString(date.getMinutes()) + "min"
+    }
     return(
-        <div style={{justifyContent: own ? "end" : "start" }} className="p-3 w-full flex">
+        <div style={{justifyContent: own ? "end" : "start" }} className="px-3 py-1 w-full flex">
             <div className="flex gap-2" style={{flexDirection: own ? "row-reverse" : "row"}}>
                 {
                 pfp && 
@@ -22,7 +25,10 @@ export default function Message(props: MessageProps){
                 }
                 <div className="flex flex-col" style={{alignItems: own ? "end" : "start" }} >
                     <div className="p-3 bg-gray-300 rounded-xl max-w-[400px]">{message}</div>
-                    <div className="text-gray-600 px-2 text-sm">{strBuilder}</div>
+                    {
+                        date &&
+                        <div className="text-gray-600 px-2 text-sm">{strBuilder}</div>
+                    }
                 </div>
             </div>
         </div>

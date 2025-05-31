@@ -12,73 +12,132 @@ import { DiscussionProvider } from "../Providers/DiscussionProvider";
 import Loading from "../Components/Loading";
 import AddFriendsTopBar from "../Components/Discussions/AddFriendsTopBar";
 import { MessageProvider } from "../Providers/MessageProvider";
+import { Message } from "../@types/Message";
 
 export default function Discussions() {
   const currentUser = useContext(Context);
   const [isOpened, setIsOpened] = useState(false);
   const [discussions, setDiscussions] = useState<DiscussionType[]>([]);
-  const [selectedDiscussion, setSelectedDiscussion] = useState<DiscussionType | null>(null)
-  const [page, setPage] = useState({page: 1});
+  const [selectedDiscussion, setSelectedDiscussion] =
+    useState<DiscussionType | null>(null);
+  const [page, setPage] = useState({ page: 1 });
   const [chargeMorePage, setChargeMorePage] = useState(true);
-  const [discussionsPromiseDone, setDiscussionsPromiseDone] = useState<boolean>(false);
+  const [discussionsPromiseDone, setDiscussionsPromiseDone] =
+    useState<boolean>(false);
   const [messageValue, setMessageValue] = useState("");
+  const [socket, setSocket] = useState<WebSocket>();
+  const [discussionsMessages, setDiscussionsMessages] = useState<{
+    discussion_id: string
+    list: Message[]
+  }[]>([]);
+  const [discussionMessage, setDiscussionMessage] = useState<Message[]>([])
+  useEffect(()=>{
+    const result = discussionsMessages.find((value)=>value.discussion_id===selectedDiscussion!.id)
+    if(result){
+      setDiscussionMessage(result.list);
+    }
+  }, [discussionsMessages, selectedDiscussion])
+
+  useEffect(() => {
+    if(selectedDiscussion){
+      MessageProvider.getLatestMessages({
+        discussion_id: selectedDiscussion.id,
+        page: 1
+      }).then((res)=>{
+        setDiscussionsMessages(value=>{
+          const index = value.findIndex((i)=>i.discussion_id===res.discussion_id);
+          if(index === -1){
+            return [...value, {
+              discussion_id: res.discussion_id,
+              list: res.list
+            }]
+          }
+          const newArr = [...value];
+          newArr[index].list = res.list;
+          return newArr;
+        })
+      });
+    }
+  }, [selectedDiscussion]);
 
   const moreDiscussionButtonClickEventHandler = () => {
-    if(discussionsPromiseDone){
-      setPage(_=>({page: _.page + 1}))
+    if (discussionsPromiseDone) {
+      setPage((_) => ({ page: _.page + 1 }));
     }
-  }
+  };
 
   const handleSendMessage = () => {
-    if(selectedDiscussion){
+    if (selectedDiscussion) {
       MessageProvider.create({
         discussion_id: selectedDiscussion.id,
-        value: messageValue
-      })
-    }else{
-      alert("select a discussion first")
+        value: messageValue,
+      });
+    } else {
+      alert("select a discussion first");
     }
-  }
+  };
 
-  useEffect(()=>{
-    setDiscussionsPromiseDone(false)
-    chargeMorePage && DiscussionProvider.getAllDiscussions({page: page.page})
-    .then((res)=>{
-      if(res.items.length === 0){
-        throw new Error("nothing found")
-      }else{
-        if(discussions === null){
-          setDiscussions(res.items);
-          return res.items
-        }else{
-          setDiscussions(data => {
-            const items = res.items.filter((item)=>{
-              const found = data?.find((value)=>{
-                return item.id === value.id
-              })
-              return !found
-            })
-            return [...data, ...items]
-          })
-          return res.items
-        }
+  useEffect(() => {
+    setDiscussionsPromiseDone(false);
+    chargeMorePage &&
+      DiscussionProvider.getAllDiscussions({ page: page.page })
+        .then((res) => {
+          if (res.items.length === 0) {
+            throw new Error("nothing found");
+          } else {
+            if (discussions === null) {
+              setDiscussions(res.items);
+              return res.items;
+            } else {
+              setDiscussions((data) => {
+                const items = res.items.filter((item) => {
+                  const found = data?.find((value) => {
+                    return item.id === value.id;
+                  });
+                  return !found;
+                });
+                return [...data, ...items];
+              });
+              return res.items;
+            }
+          }
+        })
+        .then(() => {
+          setDiscussionsPromiseDone(true);
+          console.log("done");
+        })
+        .catch((e) => {
+          if (e.message === "nothing found") {
+            setChargeMorePage(false);
+          }
+        });
+  }, [page]);
+
+  useEffect(() => {
+    const newSocket = new WebSocket("http://localhost:7000");
+    newSocket.addEventListener("message", (event) => {
+      if (event.data === "message-sent-to-discussion-event") {
+        console.log("message sent");
       }
-    }).then(()=>{
-      setDiscussionsPromiseDone(true)
-      console.log("done")
-    }).catch((e)=>{
-      if(e.message === "nothing found"){
-        setChargeMorePage(false);
-      }
+      console.log(event.data);
+
+      // setDiscussions((_) => [..._, JSON.parse(event.data)]);
     });
-  }, [page])
-  
+    setSocket(newSocket);
+  }, []);
   return (
     <div className="w-[100vw] flex flex-col h-[100vh] overflow-hidden">
       <Topbar title="something">
-        <div className="flex bg-white flex-1 justify-end gap-3 p-2 h-full items-center">
-          <a href="/user/friends/management" className="relative w-[40px] p-1 h-[40px] flex justify-center items-center rounded-full bg-blue-400">
-            <img src="/images/icons/contact-phone.svg" className="w-full h-full" alt="" />
+        <div className="flex bg-white flex-1 justify-end gap-3 h-full items-center">
+          <a
+            href="/user/friends/management"
+            className="relative w-[40px] p-1 h-[40px] flex justify-center items-center rounded-full bg-blue-400"
+          >
+            <img
+              src="/images/icons/contact-phone.svg"
+              className="w-full h-full"
+              alt=""
+            />
           </a>
         </div>
       </Topbar>
@@ -90,41 +149,64 @@ export default function Discussions() {
           title="Messages"
         >
           <div className="relative justify-between flex overflow-hidden flex-col h-full">
-            <div onScroll={(e)=>{console.log(e.detail)}} className="py-2 mx-1 bg-white h-[400px] overflow-x-hidden" style={{ flex: "1 1 0", overflowY: isOpened ? "auto" : "hidden" }}>
-              {
-                discussions ? 
+            <div
+              onScroll={(e) => {
+                console.log(e.detail);
+              }}
+              className="py-2 mx-1 bg-white h-[400px] overflow-x-hidden"
+              style={{ flex: "1 1 0", overflowY: isOpened ? "auto" : "hidden" }}
+            >
+              {discussions ? (
                 discussions.map((item) => (
                   <Discussion
-                    href={"/discussion/parameter/"+item.id}
-                    onClick={()=>{
+                    href={"/discussion/parameter/" + item.id}
+                    onClick={() => {
                       setSelectedDiscussion(item);
                     }}
+                    image={item.image}
                     expanded={isOpened}
                     name={item.name}
                     key={item.id}
                   />
-                )) : <div>{isOpened && "No Discussion"}</div>
-              }
-              {
-                isOpened &&
-                <button onClick={moreDiscussionButtonClickEventHandler} className="w-full rounded-xl transition-[300ms] hover:bg-gray-300 p-3 flex justify-center items-center">
+                ))
+              ) : (
+                <div>{isOpened && "No Discussion"}</div>
+              )}
+              {isOpened && (
+                <button
+                  onClick={moreDiscussionButtonClickEventHandler}
+                  className="w-full rounded-xl transition-[300ms] hover:bg-gray-300 p-3 flex justify-center items-center"
+                >
                   <p className="text-lg">More</p>
                 </button>
-              }
+              )}
             </div>
             <div className="pt-3 px-2 bg-white h-[67px] w-full border-t border-t-gray-400">
-              <CreateDiscussionButton href="/discussion/create" isExpanded={isOpened} />
+              <CreateDiscussionButton
+                href="/discussion/create"
+                isExpanded={isOpened}
+              />
             </div>
           </div>
         </Sidebar>
         <div className="w-full flex-1 justify-between flex flex-col">
           <div style={{ flex: "1 1 0" }} className="overflow-auto">
             <Loading loading={selectedDiscussion == null}>
-              <Messages currentUserId={currentUser.user.id} discussion={selectedDiscussion}/>
+              <Messages
+                messages={discussionMessage}
+                currentUserId={currentUser.user.id}
+                discussion={selectedDiscussion}
+              />
             </Loading>
           </div>
           <div className="sticky bottom-0 bg-white">
-            <InputBar onButtonClicked={handleSendMessage} value={messageValue} onChange={(e)=>{setMessageValue(e.target.value)}}/>
+            <InputBar
+              onButtonClicked={handleSendMessage}
+              value={messageValue}
+              onChange={(e) => {
+                setMessageValue(e.target.value);
+              }}
+            />
           </div>
         </div>
       </div>

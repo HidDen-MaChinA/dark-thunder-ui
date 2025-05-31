@@ -6,6 +6,7 @@ export type DiscussionPropsType = {
   href: string;
   lastMessage?: string;
   profilePicture?: string;
+  image?:string
   online?: boolean;
 } & React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -14,6 +15,7 @@ export type DiscussionPropsType = {
 
 export default function Discussion(props: DiscussionPropsType) {
   const {
+    image,
     expanded,
     name,
     lastMessage,
@@ -60,7 +62,7 @@ export default function Discussion(props: DiscussionPropsType) {
     >
       <div onClick={onClick}>
         <div className="rounded-full w-[40px] absolute left-[5px] block h-[40px] bg-white">
-          <img className="w-full border border-gray-400 h-full rounded-full" />
+          <img className="w-full border border-gray-400 h-full rounded-full" src={image} />
           <div className="bg-gray-300 right-0 bottom-[-5px] p-1 rounded-full absolute">
             <div
               className="rounded-full h-[10px] w-[10px]"

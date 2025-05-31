@@ -6,7 +6,7 @@ import TextField from "../Components/TextField";
 
 export default function Finalisation() {
   const navigate = useNavigate();
-  const [pfp, setPfp] = useState<string>();
+  const [pfp, setPfp] = useState<File | null>(null);
   const [firstname, setFirstname] = useState<string>("");
   const [lastname, setLastname] = useState<string>("");
   const [username, setUsername] = useState<string>("");
@@ -28,7 +28,8 @@ export default function Finalisation() {
   const PFPInputEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.item(0)) {
-      setPfp(URL.createObjectURL(files.item(0) as Blob));
+      console.log(files.item(0) as Blob)
+      setPfp(files.item(0));
     }
   };
 
@@ -39,17 +40,17 @@ export default function Finalisation() {
       email: email,
       firstname: firstname,
       lastname: lastname,
+      pfp:pfp,
       password: password,
-      pfp: pfp,
       username: username,
-    }).then(() => {
-      navigate("/user/login");
+    }).then(()=>{
+      navigate("/user/login")
     });
   };
 
   return (
     <div className="w-[100vw] h-[100vh] p-3 flex justify-center items-center">
-      <form action="" onSubmit={submitEventHandler}>
+      <form method="POST" encType="multipart/form-data" onSubmit={submitEventHandler}>
         <div className="shadow-lg rounded-xl border">
           <h1 className="w-full text-center py-3 text-xl">
             Register finalisation
@@ -99,7 +100,7 @@ export default function Finalisation() {
             <div className="flex justify-center flex-col gap-4 items-center w-[300px]">
               <div className="w-[200px] h-[200px] rounded-full bg-gray-200 border-4 border-gray-400 relative overflow-hidden">
                 <img
-                  src={pfp}
+                  src={pfp ? URL.createObjectURL(pfp as Blob) : ""}
                   alt=""
                   className="min-w-[200px] min-h-[200px]  absolute translate-[-50% -50%]"
                 />
