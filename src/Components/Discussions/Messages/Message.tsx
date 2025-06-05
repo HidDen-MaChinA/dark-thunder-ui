@@ -11,28 +11,39 @@ export default function Message(props: MessageProps){
         let strBuilder = "";
     if(date){
         strBuilder = own ? "Sent at ": "Received at"
-        strBuilder += formatNumberToString(date.getHours()) + "h and ";
+        strBuilder += formatNumberToString(date.getHours()) + ":";
         strBuilder += formatNumberToString(date.getMinutes()) + "min"
     }
-    return(
-        <div style={{justifyContent: own ? "end" : "start" }} className="px-3 py-1 w-full flex">
-            <div className="flex gap-2" style={{flexDirection: own ? "row-reverse" : "row"}}>
-                {
-                pfp && 
-                    <div className="h-[35px] w-[35px] bg-black rounded-full">
-                        <img src={pfp} alt="" className="w-full h-full rounded-full" />
-                    </div>
-                }
-                <div className="flex flex-col" style={{alignItems: own ? "end" : "start" }} >
-                    <div className="p-3 bg-gray-300 rounded-xl max-w-[400px]">{message}</div>
-                    {
-                        date &&
-                        <div className="text-gray-600 px-2 text-sm">{strBuilder}</div>
-                    }
+    return (
+      <div
+        style={{ justifyContent: own ? "end" : "start" }}
+        className="px-3 py-1 w-full bg-white relative z-10 flex"
+      >
+        <div className="flex flex-col relative">
+          <div className="flex gap-1" style={{ flexDirection: own ? "row-reverse" : "row" }}>
+            {pfp && !own && (
+              <div className="h-[40px] mt-3 w-[40px] bg-black rounded-full">
+                <img src={pfp} alt="" className="rounded-full" />
+              </div>
+            )}
+            <div
+              className="flex flex-col group"
+              style={{ alignItems: own ? "end" : "start" }}
+            >
+              <div className="text-gray-900 text-sm px-1">{userName}</div>
+              <div className="px-3 py-2 bg-gray-300 rounded-xl max-w-[400px]">
+                {message}
+              </div>
+              {date && (
+                <div className="text-gray-600 invisible z-10 mt-[-20px] duration-[100ms] group-hover:visible px-2 group-hover:mt-[0] group-hover:text-gray-600 text-sm">
+                  {strBuilder}
                 </div>
+              )}
             </div>
+          </div>
         </div>
-    )
+      </div>
+    );
 }
 
 function formatNumberToString(arg: number) : string{

@@ -16,7 +16,7 @@ export default function Messages(props: MessagePropsType) {
 
   return discussion ? (
     <div className="w-full flex flex-col h-full">
-      <div>
+      <div className="pb-5">
         {messages.length == 0 ? (
           <div className="w-full flex-col gap-4 flex p-4 items-center">
             <div className="w-[200px] h-[200px] overflow-hidden rounded-full border">
@@ -27,19 +27,29 @@ export default function Messages(props: MessagePropsType) {
             </div>
           </div>
         ) : (
-            messages.map((items, index) => (
-              <Message
-                message={items.value}
-                userName={
-                  items.user.id !== currentUserId ? items.user.username : ""
-                }
-                own={items.user.id === currentUserId}
-                date={new Date()}
-                key={"message-" + index}
-              />
+          messages
+            .sort(
+              (itemA, itemB) =>{
+                const dateA = new Date(itemA.updated_at)
+                const dateB = new Date(itemB.updated_at)
+                return dateA.getTime() - dateB.getTime()
+              }
+            )
+            .map((items, index) => (
+              <>
+                <Message
+                  message={items.value}
+                  pfp={items.user.pfp}
+                  userName={
+                    items.user.id !== currentUserId ? items.user.username : ""
+                  }
+                  own={items.user.id === currentUserId}
+                  date={new Date(items.updated_at)}
+                  key={"message-" + index}
+                />
+              </>
             ))
         )}
-        <DateNotifier date={new Date()} />
       </div>
     </div>
   ) : (

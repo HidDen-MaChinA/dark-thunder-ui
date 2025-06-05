@@ -1,9 +1,13 @@
-import { Discussion } from "./Discussion"
-import { UserAuthentified } from "./User"
+import { Discussion } from "./Discussion";
+import { UserAuthentified } from "./User";
 
 export type Message = {
-    id: number
-    value: string
-    user: UserAuthentified
-    discussion: Discussion
-}
+  discussion_id: string;
+  id: number;
+  user_id: string;
+  user: UserAuthentified
+  discussion: Discussion
+  value: string;
+  created_at: string;
+  updated_at: string;
+};

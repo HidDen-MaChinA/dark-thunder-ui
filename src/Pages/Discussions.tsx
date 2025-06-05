@@ -13,6 +13,7 @@ import Loading from "../Components/Loading";
 import AddFriendsTopBar from "../Components/Discussions/AddFriendsTopBar";
 import { MessageProvider } from "../Providers/MessageProvider";
 import { Message } from "../@types/Message";
+import { blobToObject } from "../utils/ArrayBufferToObject";
 
 export default function Discussions() {
   const currentUser = useContext(Context);
@@ -71,6 +72,8 @@ export default function Discussions() {
       MessageProvider.create({
         discussion_id: selectedDiscussion.id,
         value: messageValue,
+      }).then(()=>{
+        setMessageValue("")
       });
     } else {
       alert("select a discussion first");
@@ -115,15 +118,26 @@ export default function Discussions() {
 
   useEffect(() => {
     const newSocket = new WebSocket("http://localhost:7000");
-    newSocket.addEventListener("message", (event) => {
-      if (event.data === "message-sent-to-discussion-event") {
-        console.log("message sent");
-      }
-      console.log(event.data);
+    const eventListener = (event:MessageEvent) => {
+      blobToObject(event.data).then((message: Message)=>{
+        console.log(message)
+        setDiscussionsMessages((oldDiscussions) => {
+          const index = oldDiscussions.findIndex((i)=>i.discussion_id === message.discussion_id);
+          if(index >= 0){
+            const newDiscussionsMessages = [...oldDiscussions]
+            newDiscussionsMessages[index].list.push(message)
+            return newDiscussionsMessages;
+          }
+          return oldDiscussions
+        });
+      })
 
-      // setDiscussions((_) => [..._, JSON.parse(event.data)]);
-    });
+    }
+    newSocket.addEventListener("message", eventListener);
     setSocket(newSocket);
+    return ()=>{
+      newSocket.removeEventListener("message", eventListener); 
+    }
   }, []);
   return (
     <div className="w-[100vw] flex flex-col h-[100vh] overflow-hidden">
