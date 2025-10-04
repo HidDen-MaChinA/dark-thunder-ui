@@ -14,9 +14,12 @@ import AddFriendsTopBar from "../Components/Discussions/AddFriendsTopBar";
 import { MessageProvider } from "../Providers/MessageProvider";
 import { Message } from "../@types/Message";
 import { blobToObject } from "../utils/ArrayBufferToObject";
+import useWebSocket from "../hooks/useWebSocket";
+import { useDiscussionsManager } from "../services/DiscussionsManager";
 
 export default function Discussions() {
   const currentUser = useContext(Context);
+  const discussionsManager = useDiscussionsManager();
   const [isOpened, setIsOpened] = useState(false);
   const [discussions, setDiscussions] = useState<DiscussionType[]>([]);
   const [selectedDiscussion, setSelectedDiscussion] =
@@ -38,6 +41,12 @@ export default function Discussions() {
       setDiscussionMessage(result.list);
     }
   }, [discussionsMessages, selectedDiscussion])
+  // implementation prototyp using zustand
+  useEffect(()=>{
+    discussionsManager.registerEventListeners();
+    return discussionsManager.disableEventListeners;
+  }, [])
+  //
 
   useEffect(() => {
     if(selectedDiscussion){
@@ -116,27 +125,25 @@ export default function Discussions() {
         });
   }, [page]);
 
+  const socketManager = useWebSocket("http://localhost:7000");
+  const eventListener = (event:MessageEvent) => {
+    blobToObject(event.data).then((message: Message)=>{
+      console.log(message)
+      setDiscussionsMessages((oldDiscussions) => {
+        const index = oldDiscussions.findIndex((i)=>i.discussion_id === message.discussion_id);
+        if(index >= 0){
+          const newDiscussionsMessages = [...oldDiscussions]
+          newDiscussionsMessages[index].list.push(message)
+          return newDiscussionsMessages;
+        }
+        return oldDiscussions
+      });
+    })
+  }
   useEffect(() => {
-    const newSocket = new WebSocket("http://localhost:7000");
-    const eventListener = (event:MessageEvent) => {
-      blobToObject(event.data).then((message: Message)=>{
-        console.log(message)
-        setDiscussionsMessages((oldDiscussions) => {
-          const index = oldDiscussions.findIndex((i)=>i.discussion_id === message.discussion_id);
-          if(index >= 0){
-            const newDiscussionsMessages = [...oldDiscussions]
-            newDiscussionsMessages[index].list.push(message)
-            return newDiscussionsMessages;
-          }
-          return oldDiscussions
-        });
-      })
-
-    }
-    newSocket.addEventListener("message", eventListener);
-    setSocket(newSocket);
+    socketManager.onMessage(eventListener);
     return ()=>{
-      newSocket.removeEventListener("message", eventListener); 
+      socketManager.removeSocket();
     }
   }, []);
   return (
