@@ -1,3 +1,4 @@
+import { Discussion } from "../@types/Discussion";
 import { DiscussionsStoreType, useDiscussionsStore } from "../utils/DiscussionsStateManager";
 
 export function useDiscussionsManager(){
@@ -7,24 +8,13 @@ export function useDiscussionsManager(){
 
 export class DiscussionsManager{
     private discussionsStore : DiscussionsStoreType | null  = null;
-    private discussionFetch(){
+    async discussionFetch(discussion: Discussion){
         // TODO: implement discussion fetch event
+        return this.discussionsStore;
     }
-    private discussionsFetch(){
+    async discussionsFetch(page: number){
         // TODO: implement discussions fetch event        
-    }
-    registerEventListeners(){
-        window.addEventListener("discussions:fetch", this.discussionsFetch)
-        window.addEventListener("discussion:fetch", this.discussionFetch)
-
-    }
-    dispatchEvent(eventName: DiscussionEvent){
-        const event = new Event(eventName, {cancelable: true});
-        window.dispatchEvent(event);
-    }
-    disableEventListeners(){
-       window.removeEventListener("discussions:fetch", this.discussionsFetch); 
-       window.removeEventListener("discussions:fetch", this.discussionFetch); 
+        return this.discussionsStore;
     }
     constructor(store: DiscussionsStoreType){
         this.discussionsStore = store;

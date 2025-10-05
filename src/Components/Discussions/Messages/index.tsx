@@ -4,20 +4,37 @@ import { Message as MessageType } from "../../../@types/Message";
 import { DateNotifier } from "./DateNotifier";
 import Message from "./Message";
 import { MessageProvider } from "../../../Providers/MessageProvider";
+import { DiscussionsStoreDiscussion, useDiscussionsStore } from "../../../utils/DiscussionsStateManager";
+import { useDiscussionsManager } from "../../../services/DiscussionsManager";
 
 type MessagePropsType = {
   discussion: Discussion | null;
   currentUserId: string;
-  messages: MessageType[]
 };
 
 export default function Messages(props: MessagePropsType) {
-  const { discussion, currentUserId, messages } = props;
+  const { discussion, currentUserId } = props;
+  const store = useDiscussionsStore();
+  const discussionsManager = useDiscussionsManager();
+  const [currentDiscussion, setCurrentDiscussion] = useState<DiscussionsStoreDiscussion|null|undefined>(null);
+  useEffect(()=>{
+    if (discussion) {
+      const temp = store.discussions.find((_) => _.id === discussion.id);
+      temp && discussionsManager.discussionFetch({...temp}).then((discussionStore)=>{
+        if(discussionStore){
+          const newtemp = discussionStore.discussions.find((_) => _.id === discussion.id);
+          setCurrentDiscussion(newtemp)
+        }
+      });
+      setCurrentDiscussion(temp);
+    }
+  }, [discussion, store])
 
-  return discussion ? (
-    <div className="w-full flex flex-col h-full">
+  if(discussion){
+    return (
+     <div className="w-full flex flex-col h-full">
       <div className="pb-5">
-        {messages.length == 0 ? (
+        {currentDiscussion && currentDiscussion.messages.length == 0 ? (
           <div className="w-full flex-col gap-4 flex p-4 items-center">
             <div className="w-[200px] h-[200px] overflow-hidden rounded-full border">
               <img src={discussion.image} alt="" />
@@ -27,7 +44,7 @@ export default function Messages(props: MessagePropsType) {
             </div>
           </div>
         ) : (
-          messages
+          currentDiscussion && currentDiscussion.messages
             .sort(
               (itemA, itemB) =>{
                 const dateA = new Date(itemA.updated_at)
@@ -52,7 +69,8 @@ export default function Messages(props: MessagePropsType) {
         )}
       </div>
     </div>
-  ) : (
-    <div></div>
-  );
+     
+    )
+  }
+  return <div></div>
 }

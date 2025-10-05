@@ -13,62 +13,22 @@ import Loading from "../Components/Loading";
 import AddFriendsTopBar from "../Components/Discussions/AddFriendsTopBar";
 import { MessageProvider } from "../Providers/MessageProvider";
 import { Message } from "../@types/Message";
-import { blobToObject } from "../utils/ArrayBufferToObject";
+import { blobToObject, blobToText } from "../utils/ArrayBufferToObject";
 import useWebSocket from "../hooks/useWebSocket";
 import { useDiscussionsManager } from "../services/DiscussionsManager";
+import { useDiscussionsStore } from "../utils/DiscussionsStateManager";
 
 export default function Discussions() {
   const currentUser = useContext(Context);
+  const store = useDiscussionsStore();
   const discussionsManager = useDiscussionsManager();
   const [isOpened, setIsOpened] = useState(false);
-  const [discussions, setDiscussions] = useState<DiscussionType[]>([]);
   const [selectedDiscussion, setSelectedDiscussion] =
     useState<DiscussionType | null>(null);
   const [page, setPage] = useState({ page: 1 });
-  const [chargeMorePage, setChargeMorePage] = useState(true);
   const [discussionsPromiseDone, setDiscussionsPromiseDone] =
     useState<boolean>(false);
   const [messageValue, setMessageValue] = useState("");
-  const [socket, setSocket] = useState<WebSocket>();
-  const [discussionsMessages, setDiscussionsMessages] = useState<{
-    discussion_id: string
-    list: Message[]
-  }[]>([]);
-  const [discussionMessage, setDiscussionMessage] = useState<Message[]>([])
-  useEffect(()=>{
-    const result = discussionsMessages.find((value)=>value.discussion_id===selectedDiscussion!.id)
-    if(result){
-      setDiscussionMessage(result.list);
-    }
-  }, [discussionsMessages, selectedDiscussion])
-  // implementation prototyp using zustand
-  useEffect(()=>{
-    discussionsManager.registerEventListeners();
-    return discussionsManager.disableEventListeners;
-  }, [])
-  //
-
-  useEffect(() => {
-    if(selectedDiscussion){
-      MessageProvider.getLatestMessages({
-        discussion_id: selectedDiscussion.id,
-        page: 1
-      }).then((res)=>{
-        setDiscussionsMessages(value=>{
-          const index = value.findIndex((i)=>i.discussion_id===res.discussion_id);
-          if(index === -1){
-            return [...value, {
-              discussion_id: res.discussion_id,
-              list: res.list
-            }]
-          }
-          const newArr = [...value];
-          newArr[index].list = res.list;
-          return newArr;
-        })
-      });
-    }
-  }, [selectedDiscussion]);
 
   const moreDiscussionButtonClickEventHandler = () => {
     if (discussionsPromiseDone) {
@@ -89,58 +49,17 @@ export default function Discussions() {
     }
   };
 
-  useEffect(() => {
-    setDiscussionsPromiseDone(false);
-    chargeMorePage &&
-      DiscussionProvider.getAllDiscussions({ page: page.page })
-        .then((res) => {
-          if (res.items.length === 0) {
-            throw new Error("nothing found");
-          } else {
-            if (discussions === null) {
-              setDiscussions(res.items);
-              return res.items;
-            } else {
-              setDiscussions((data) => {
-                const items = res.items.filter((item) => {
-                  const found = data?.find((value) => {
-                    return item.id === value.id;
-                  });
-                  return !found;
-                });
-                return [...data, ...items];
-              });
-              return res.items;
-            }
-          }
-        })
-        .then(() => {
-          setDiscussionsPromiseDone(true);
-          console.log("done");
-        })
-        .catch((e) => {
-          if (e.message === "nothing found") {
-            setChargeMorePage(false);
-          }
-        });
-  }, [page]);
 
   const socketManager = useWebSocket("http://localhost:7000");
   const eventListener = (event:MessageEvent) => {
-    blobToObject(event.data).then((message: Message)=>{
-      console.log(message)
-      setDiscussionsMessages((oldDiscussions) => {
-        const index = oldDiscussions.findIndex((i)=>i.discussion_id === message.discussion_id);
-        if(index >= 0){
-          const newDiscussionsMessages = [...oldDiscussions]
-          newDiscussionsMessages[index].list.push(message)
-          return newDiscussionsMessages;
-        }
-        return oldDiscussions
-      });
+    blobToText(event.data).then((event: string)=>{
+      discussionsManager.discussionsFetch(page.page);
     })
   }
   useEffect(() => {
+    discussionsManager.discussionsFetch(page.page).then(()=>{
+      setDiscussionsPromiseDone(true);
+    });
     socketManager.onMessage(eventListener);
     return ()=>{
       socketManager.removeSocket();
@@ -177,8 +96,8 @@ export default function Discussions() {
               className="py-2 mx-1 bg-white h-[400px] overflow-x-hidden"
               style={{ flex: "1 1 0", overflowY: isOpened ? "auto" : "hidden" }}
             >
-              {discussions ? (
-                discussions.map((item) => (
+              {store.discussions.length !== 0 ? (
+                store.discussions.map((item) => (
                   <Discussion
                     href={"/discussion/parameter/" + item.id}
                     onClick={() => {
@@ -214,7 +133,6 @@ export default function Discussions() {
           <div style={{ flex: "1 1 0" }} className="overflow-auto">
             <Loading loading={selectedDiscussion == null}>
               <Messages
-                messages={discussionMessage}
                 currentUserId={currentUser.user.id}
                 discussion={selectedDiscussion}
               />
