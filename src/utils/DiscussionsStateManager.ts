@@ -20,6 +20,7 @@ export type DiscussionsStoreType = {
     addMessagesToDiscussion: (messages: Message[], discussion: Discussion, callback?: ()=>void)=>void
     // removeMessageFromDiscussion: (message: Message)=>void
     addDiscussion: (discussion: Discussion)=>void
+    addDiscussions: (discussions: Discussion[])=>void
     removeDiscussion: (discussion: Discussion)=>void
 }
 
@@ -38,6 +39,20 @@ export const useDiscussionsStore = create<DiscussionsStoreType>((set, get)=>({
             newState.discussions.push(mapper.discussionToDiscussionStoreDiscussion(discussion));
             return newState;
         })
+    },
+    addDiscussions: (discussions)=>{
+        set((state)=>{
+            const notInside = discussions.filter((discussion)=>{
+                const index = state.discussions.findIndex(_=>_.id === discussion.id);
+                return index < 0;
+            })
+            const newState = {...state}
+            const mapper = new DiscussionMapper();
+            const mappedNotInside = notInside.map(mapper.discussionToDiscussionStoreDiscussion);
+            newState.discussions.push(...mappedNotInside)
+            return newState;
+        })
+
     },
     removeDiscussion: (discussion)=>{
         set((state)=>{
