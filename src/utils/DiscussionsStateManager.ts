@@ -2,7 +2,6 @@ import { Discussion } from '../@types/Discussion';
 import { Message } from '../@types/Message';
 import { UserAuthentified } from '../@types/User';
 import { DiscussionMapper } from '../mappers/DiscussionMapper';
-import { StateCreator } from './../../node_modules/zustand/vanilla.d';
 import { create } from "zustand";
 
 
@@ -26,7 +25,7 @@ export type DiscussionsStoreType = {
 
 
 
-export const useDiscussionsStore = create<DiscussionsStoreType>((set, get)=>({
+export const useDiscussionsStore = create<DiscussionsStoreType>((set)=>({
     discussions: [],
     addDiscussion: (discussion)=>{
         set((state)=>{

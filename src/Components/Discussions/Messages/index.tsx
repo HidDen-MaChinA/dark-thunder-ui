@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { Discussion } from "../../../@types/Discussion";
-import { Message as MessageType } from "../../../@types/Message";
-import { DateNotifier } from "./DateNotifier";
 import Message from "./Message";
-import { MessageProvider } from "../../../Providers/MessageProvider";
 import { DiscussionsStoreDiscussion, useDiscussionsStore } from "../../../utils/DiscussionsStateManager";
 import { useDiscussionsManager } from "../../../services/DiscussionsManager";
 
