@@ -19,25 +19,21 @@ export class DiscussionsManager{
      * wrote the code, i still add it just in case. 
      */
     async discussionFetch(discussion: Discussion, page: number = 1, callback = ()=>{}){
-        MessageProvider.getLatestMessages({
+        return MessageProvider.getLatestMessages({
             discussion_id: discussion.id,
             page: page
         }).then((result)=>{
             this.discussionsStore?.addMessagesToDiscussion(result.list, discussion, callback)
+            return this.discussionsStore;
         })
-        // TODO: implement discussion fetch event
-        return this.discussionsStore;
     }
     async discussionsFetch(page: number){
-        DiscussionProvider.getAllDiscussions({page: page}).then((result)=>{
+        return DiscussionProvider.getAllDiscussions({page: page}).then((result)=>{
             this.discussionsStore?.addDiscussions(result.items)
+            return this.discussionsStore;
         });
-        // TODO: implement discussions fetch event        
-        return this.discussionsStore;
     }
     constructor(store: DiscussionsStoreType){
         this.discussionsStore = store;
     }
 }
-
-export type DiscussionEvent =  "discussions:fetch" | "discussion:fetch"

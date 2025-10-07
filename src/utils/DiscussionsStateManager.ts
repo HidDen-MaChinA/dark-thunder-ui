@@ -46,6 +46,7 @@ export const useDiscussionsStore = create<DiscussionsStoreType>((set, get)=>({
                 const index = state.discussions.findIndex(_=>_.id === discussion.id);
                 return index < 0;
             })
+            console.log(notInside)
             const newState = {...state}
             const mapper = new DiscussionMapper();
             const mappedNotInside = notInside.map(mapper.discussionToDiscussionStoreDiscussion);
@@ -73,9 +74,36 @@ export const useDiscussionsStore = create<DiscussionsStoreType>((set, get)=>({
                 return state;
             }
             const newState = {...state};
-            newState.discussions[discussionIndex].messages.push(...messages)
+            const newStatesCurrentDiscussionMessage = newState.discussions[discussionIndex].messages;
+            const newMessages = [...mergeMessages(newStatesCurrentDiscussionMessage, messages)];
+            newState.discussions[discussionIndex].messages = newMessages;
             return newState;
         })
-    },
+    }
     // removeMessageFromDiscussion: (message)=>{}
 }))
+
+function mergeMessages(olds: Message[], news: Message[]){
+    if(olds.length  === 0){
+        return news;        
+    }
+    if(news.length === 0){
+        return olds
+    }
+    const lastMessageRecorded = olds[olds.length - 1];
+    let index = 0;
+    for(let i=0;i<news.length;i++){
+        if(news[i].id <= lastMessageRecorded.id){
+            console.log(news[i]);
+            index = i;
+            break;
+        }
+    }
+    const newMessagesRecorded = news.slice(0, index);
+    if(newMessagesRecorded.length === 0){
+        return olds;
+    }
+    const newMessages = [...olds]
+    newMessages.push(...newMessagesRecorded);
+    return newMessages;
+}

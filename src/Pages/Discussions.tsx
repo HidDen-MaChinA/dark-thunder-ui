@@ -13,7 +13,7 @@ import Loading from "../Components/Loading";
 import AddFriendsTopBar from "../Components/Discussions/AddFriendsTopBar";
 import { MessageProvider } from "../Providers/MessageProvider";
 import { Message } from "../@types/Message";
-import { blobToObject, blobToText } from "../utils/ArrayBufferToObject";
+import { blobToObject } from "../utils/ArrayBufferToObject";
 import useWebSocket from "../hooks/useWebSocket";
 import { useDiscussionsManager } from "../services/DiscussionsManager";
 import { useDiscussionsStore } from "../utils/DiscussionsStateManager";
@@ -38,11 +38,11 @@ export default function Discussions() {
 
   const handleSendMessage = () => {
     if (selectedDiscussion) {
+      setMessageValue("")
       MessageProvider.create({
         discussion_id: selectedDiscussion.id,
         value: messageValue,
       }).then(()=>{
-        setMessageValue("")
       });
     } else {
       alert("select a discussion first");
@@ -52,15 +52,22 @@ export default function Discussions() {
 
   const socketManager = useWebSocket("http://localhost:7000");
   const eventListener = (event:MessageEvent) => {
-    blobToText(event.data).then((event: string)=>{
-      discussionsManager.discussionsFetch(page.page);
+    blobToObject(event.data).then((event: {event: string})=>{
+     const eventPayload = event.event.split(":")
+     if(eventPayload[0] === "message"){
+        const discussion = store.discussions.find(_=>_.id === eventPayload[1])
+        if(discussion){
+          discussionsManager.discussionFetch(discussion); 
+        }
+     }
+      // discussionsManager.discussionsFetch(page.page);
     })
   }
   useEffect(() => {
     discussionsManager.discussionsFetch(page.page).then(()=>{
       setDiscussionsPromiseDone(true);
     });
-    socketManager.onMessage(eventListener);
+    socketManager.openConnection().onMessage(eventListener);
     return ()=>{
       socketManager.removeSocket();
     }

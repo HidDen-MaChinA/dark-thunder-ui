@@ -28,7 +28,7 @@ export default function Messages(props: MessagePropsType) {
       });
       setCurrentDiscussion(temp);
     }
-  }, [discussion, store])
+  }, [discussion])
 
   if(discussion){
     return (
@@ -62,7 +62,7 @@ export default function Messages(props: MessagePropsType) {
                   }
                   own={items.user.id === currentUserId}
                   date={new Date(items.updated_at)}
-                  key={"message-" + index}
+                  key={"message-id:"+items.id+"-index-" + index}
                 />
               </>
             ))

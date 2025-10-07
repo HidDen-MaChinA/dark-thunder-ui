@@ -10,7 +10,11 @@ class WebSocketManager {
   private url: string = ""
 
   onMessage(callback: (event: MessageEvent) => void) {
+    if(this.socket){
+      this.socket.removeEventListener("message", this.callback);
+    }
     this.callback = callback;
+    this.socket?.addEventListener('message', this.callback);
   }
 
   removeSocket() {
@@ -25,12 +29,20 @@ class WebSocketManager {
     const newSocket = new WebSocket(this.url);
     newSocket.addEventListener("message", this.callback);
     this.socket = newSocket;
+    return this;
+  }
+
+  openConnection() {
+    const newSocket = new WebSocket(this.url);
+    this.socket = newSocket;
+    newSocket.addEventListener("message", this.callback);
+    this.socket.onerror = ()=>{
+      this.refreshConnection();
+    };
+    return this;
   }
 
   constructor(url: string) {
-    const newSocket = new WebSocket(url);
-    newSocket.addEventListener("message", this.callback);
     this.url = url;
-    this.socket = newSocket;
   }
 }
