@@ -53,7 +53,7 @@ export default function Discussions() {
      if(eventPayload[0] === "message"){
         const discussion = store.discussions.find(_=>_.id === eventPayload[1])
         if(discussion){
-          discussionsManager.discussionFetch(discussion); 
+          discussionsManager.discussionMessageFetch(discussion); 
         }
      }
       // discussionsManager.discussionsFetch(page.page);
@@ -108,6 +108,7 @@ export default function Discussions() {
                     }}
                     image={item.image}
                     expanded={isOpened}
+                    lastMessage={item.messages[item.messages.length - 1]}
                     name={item.name}
                     key={item.id}
                   />

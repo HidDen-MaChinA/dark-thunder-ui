@@ -18,7 +18,7 @@ export class DiscussionsManager{
      * while the discussion will always be there because of how I
      * wrote the code, i still add it just in case. 
      */
-    async discussionFetch(discussion: Discussion, page: number = 1, callback = ()=>{}){
+    async discussionMessageFetch(discussion: Discussion, page: number = 1, callback = ()=>{}){
         return MessageProvider.getLatestMessages({
             discussion_id: discussion.id,
             page: page
@@ -30,6 +30,9 @@ export class DiscussionsManager{
     async discussionsFetch(page: number){
         return DiscussionProvider.getAllDiscussions({page: page}).then((result)=>{
             this.discussionsStore?.addDiscussions(result.items)
+            this.discussionsStore?.discussions.forEach((discussion)=>{
+                this.discussionMessageFetch(discussion, 1);
+            })
             return this.discussionsStore;
         });
     }

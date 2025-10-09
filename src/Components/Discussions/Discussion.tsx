@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Message } from "../../@types/Message";
 
 export type DiscussionPropsType = {
   expanded: boolean;
   name: string;
   href: string;
-  lastMessage?: string;
+  lastMessage?: Message;
   profilePicture?: string;
   image?:string
   online?: boolean;
@@ -77,7 +78,7 @@ export default function Discussion(props: DiscussionPropsType) {
           <div>
             <h4 className="bold w-[170px] text-ellipsis whitespace-nowrap overflow-hidden">{name}</h4>
             <p className="text-gray-500 w-[150px] text-sm text-ellipsis whitespace-nowrap overflow-hidden">
-              {lastMessage || "You can now send a message !"}
+              {lastMessage ?  lastMessage.value :  "You can now send a message !"}
             </p>
           </div>
         </div>

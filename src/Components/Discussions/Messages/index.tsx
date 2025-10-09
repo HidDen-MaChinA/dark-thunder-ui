@@ -17,7 +17,7 @@ export default function Messages(props: MessagePropsType) {
   useEffect(()=>{
     if (discussion) {
       const temp = store.discussions.find((_) => _.id === discussion.id);
-      temp && discussionsManager.discussionFetch({...temp}).then((discussionStore)=>{
+      temp && discussionsManager.discussionMessageFetch({...temp}).then((discussionStore)=>{
         if(discussionStore){
           const newtemp = discussionStore.discussions.find((_) => _.id === discussion.id);
           setCurrentDiscussion(newtemp)
