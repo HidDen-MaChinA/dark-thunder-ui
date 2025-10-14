@@ -13,9 +13,6 @@ export default function LandingPage(){
             <LanguageListWrapper>
                 <LanguageList />
             </LanguageListWrapper>
-            <ProjectsWrapper>
-                <Projects />
-            </ProjectsWrapper>
             <ContactWrapper>
                 <Contact />
             </ContactWrapper>

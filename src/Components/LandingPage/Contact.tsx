@@ -6,12 +6,12 @@ export default function Contact (){
     ] 
     
     const contact : ContactInfoProps[] = [
-        {image: "gmail.svg", text: "hei.franco.3@gmail.com"},
+        {image: "gmail.svg", text: "niainafrancoroberto@gmail.com"},
         {image: "contact-phone.svg", text: "0382151528"},
     ]
 
     return (
-        <div className="h-[60vh] p-6 flex flex-col justify-between">
+        <div id="contact" className="h-[60vh] p-6 flex flex-col justify-between">
             <div className="flex flex-col gap-3 w-full items-center">
                 <p className="text-3xl w-4/5 text-center">User Interface is Important when it come to sell a product, it is therefor important to make it clean, efficient and understandable.</p>
             </div>

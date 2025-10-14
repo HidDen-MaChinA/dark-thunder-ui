@@ -60,14 +60,16 @@ export default function Discussions() {
     })
   }
   useEffect(() => {
-    discussionsManager.discussionsFetch(page.page).then(()=>{
-      setDiscussionsPromiseDone(true);
-    });
-    socketManager.openConnection().onMessage(eventListener);
+    if(!discussionsPromiseDone){
+      discussionsManager.discussionsFetch(page.page).then(()=>{
+        setDiscussionsPromiseDone(true);
+      });
+      socketManager.openConnection().onMessage(eventListener);
+    }
     return ()=>{
       socketManager.removeSocket();
     }
-  }, []);
+  }, [store]);
   return (
     <div className="w-[100vw] flex flex-col h-[100vh] overflow-hidden">
       <Topbar title="something">
