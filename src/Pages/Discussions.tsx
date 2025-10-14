@@ -72,7 +72,7 @@ export default function Discussions() {
   }, [store]);
   return (
     <div className="w-[100vw] flex flex-col h-[100vh] overflow-hidden">
-      <Topbar title="something">
+      <Topbar title="Discussions">
         <div className="flex bg-white flex-1 justify-end gap-3 h-full items-center">
           <a
             href="/user/friends/management"
@@ -116,9 +116,9 @@ export default function Discussions() {
                   />
                 ))
               ) : (
-                <div>{isOpened && "No Discussion"}</div>
+                <div className="text-gray-800 px-3">{isOpened && "No Discussion"}</div>
               )}
-              {isOpened && (
+              {(isOpened && store.discussions.length > 0) && (
                 <button
                   onClick={moreDiscussionButtonClickEventHandler}
                   className="w-full rounded-xl transition-[300ms] hover:bg-gray-300 p-3 flex justify-center items-center"
@@ -137,7 +137,7 @@ export default function Discussions() {
         </Sidebar>
         <div className="w-full flex-1 justify-between flex flex-col">
           <div style={{ flex: "1 1 0" }} className="overflow-auto">
-            <Loading loading={selectedDiscussion == null}>
+            <Loading fallback={<MessagesFallbackScreen />} loading={selectedDiscussion == null}>
               <Messages
                 currentUserId={currentUser.user.id}
                 discussion={selectedDiscussion}
@@ -157,4 +157,16 @@ export default function Discussions() {
       </div>
     </div>
   );
+}
+
+
+function MessagesFallbackScreen(){
+  return(
+    <div className="w-full h-full flex flex-col gap-4 justify-center items-center">
+      <h1 className="text-3xl text-gray-600">Select a discussion or create one</h1>
+      <div>
+        <a href="/discussion/create" className="bg-gray-800 text-center text-xl px-4 block text-white p-2 rounded-xl shadow-lg">Create Discussion</a> 
+      </div>
+    </div>
+  )
 }

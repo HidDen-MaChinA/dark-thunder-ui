@@ -15,7 +15,9 @@ export default function Topbar(props: React.HTMLAttributes<HTMLDivElement> & Top
         {...props}
         className="flex pr-4 relative z-30 gap-2 shadow-md border-b sticky bg-white top-0 w-full"
       >
-        <h2 className="text-xl p-2 px-5">{title}</h2>
+        <div className="flex items-center">
+          <h2 className="text-2xl text-gray-800 p-2 px-5">{title}</h2>
+        </div>
         <div className="flex-1">{children}</div>
         <div className="flex items-center">
           <Warning message="are you sure you want to do that bro ?" />
