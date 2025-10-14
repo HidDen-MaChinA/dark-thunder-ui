@@ -29,10 +29,10 @@ export default function Register() {
       <div className="flex flex-row h-[100vh] w-[100vw]">
         <div className="w-1/2 bg-black flex justify-center items-center">
           <div className="items-center flex flex-col">
-            <div className="w-[100px] h-[100px] relative">
-              <img src="/images/icons/source-code-white.svg" alt="" className="w-full h-full" />
+            <div className="w-[180px] rounded-full p-3 bg-white h-[180px] relative">
+              <img src="/images/logo.png" alt="" className="w-full h-full" />
             </div>
-            <h1 className="w-full text-center text-xl text-white">Dark Thunder</h1>
+            <h1 className="w-full text-center pt-2 text-2xl text-white">Dark Thunder</h1>
           </div>
         </div>
         <div className="w-1/2 flex justify-center items-center">

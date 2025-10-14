@@ -2,7 +2,6 @@ export default function Contact (){
     const network : ContactInfoProps[] = [
         {image: "github.svg", text: "Hidden-machina", link: "https://github.com/hidden-machina"},
         {image: "linkedin.svg", text: "Niaina Franco ROBERTO"},
-        {image: "test.png", text: "Franco Roberto"}
     ] 
     
     const contact : ContactInfoProps[] = [
@@ -11,24 +10,24 @@ export default function Contact (){
     ]
 
     return (
-        <div id="contact" className="h-[60vh] p-6 flex flex-col justify-between">
+        <div id="contact" className="p-6 flex flex-col justify-between">
             <div className="flex flex-col gap-3 w-full items-center">
                 <p className="text-3xl w-4/5 text-center">User Interface is Important when it come to sell a product, it is therefor important to make it clean, efficient and understandable.</p>
             </div>
-            <div className="flex justify-center gap-[200px] flex-row items-center">
-                <div className="flex justify-center flex-col items-center w-1/2 gap-6 w-content">
-                    <p className="text-3xl text-center">Find me on</p>
-                    <div className="flex flex-row justify-center gap-7 w-full flex-wrap">
-                        {
-                            network.map((item, i)=>(<ContactInfo key={"Contact-info-id-" + i} {...item}/>))
-                        }
-                    </div>
-                </div>
+            <div className="flex justify-center pt-[100px] pb-[100px] gap-[50px] flex-wrap items-center">
                 <div className="flex justify-center flex-col items-center w-1/2 gap-6">
                     <p className="text-3xl text-center">Contact</p>
                     <div className="flex flex-row justify-center gap-7 w-full flex-wrap">
                         {
                             contact.map((item, i)=>(<ContactInfo key={"Contact-info-id-" + i} {...item}/>))
+                        }
+                    </div>
+                </div>
+                <div className="flex justify-center flex-col items-center w-1/2 gap-6 w-content">
+                    <p className="text-3xl text-center">Find me on</p>
+                    <div className="flex flex-row justify-center gap-7 w-full flex-wrap">
+                        {
+                            network.map((item, i)=>(<ContactInfo key={"Contact-info-id-" + i} {...item}/>))
                         }
                     </div>
                 </div>

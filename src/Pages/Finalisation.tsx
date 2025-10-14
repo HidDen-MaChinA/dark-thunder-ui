@@ -52,7 +52,7 @@ export default function Finalisation() {
     <div className="w-[100vw] h-[100vh] p-3 flex justify-center items-center">
       <form method="POST" encType="multipart/form-data" onSubmit={submitEventHandler}>
         <div className="shadow-lg rounded-xl border">
-          <h1 className="w-full text-center py-3 text-xl">
+          <h1 className="w-full text-center py-3 text-2xl">
             Register finalisation
           </h1>
           <div className="flex gap-3">

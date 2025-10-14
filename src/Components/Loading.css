@@ -1,0 +1,17 @@
+.spin-animated{
+    animation-name: spin-animation;
+    animation-duration: 800ms;
+    animation-iteration-count: infinite;
+}
+
+@keyframes spin-animation{
+    0%{
+        transform: rotate(0deg);    
+    }
+    50%{
+        transform: rotate(180deg);    
+    }
+    100%{
+        transform: rotate(360deg);    
+    }    
+}

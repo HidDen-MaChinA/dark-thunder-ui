@@ -1,4 +1,5 @@
 import React from "react"
+import "./Loading.css";
 
 
 type LoadingPropsType = {
@@ -12,7 +13,18 @@ export default function Loading(props: LoadingPropsType){
     return (
         loading ? 
         <>
-            {fallback || <div>loading...</div>}
+            { fallback || 
+                <div className="h-full w-full flex justify-center items-center">
+                    <div className="spin-animated w-[80px] overflow-hidden relative h-[80px] flex justify-center items-center rounded-full">
+                        <div className="absolute flex w-full h-full">
+                            <div className="bg-white flex-1"></div>
+                            <div className="bg-black flex-1"></div>
+                        </div>
+                        <div className="w-[70px] h-[70px] z-30 rounded-full bg-white">
+                        </div>
+                    </div>
+                </div>
+            }
         </>
         :   
         children
