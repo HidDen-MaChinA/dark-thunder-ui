@@ -34,19 +34,26 @@ export default function CreateDiscussion(){
     return(
         <div className="w-[100vw] h-[100vh] flex flex-col">
             <Topbar>
-                <h1 className="text-xl text-center p-3">
-                    Create new discussion
-                </h1>
+                <div className="h-full flex items-center">
+                    <h1 className="text-2xl text-gray-800 text-center">
+                        Create new discussion
+                    </h1>
+                </div>
             </Topbar>
             <div className="w-full h-full flex justify-center items-center">
                 <form action="" onSubmit={submitEventHandler}>
                     <div className="w-max p-3 shadow-lg border rounded-lg">
                         <div className="w-full justify-center flex">
                             <div className="w-[100px] relative h-[100px]">
-                                <div className="w-[100px] overflow-hidden h-[100px] relative rounded-full bg-white border border-gray-300">
-                                    <img className="w-full" src={image ? URL.createObjectURL(image) : ""} alt="" />
+                                <div className="w-[100px] flex justify-center items-center overflow-hidden h-[100px] relative rounded-full bg-white border border-gray-300">
+                                    {
+                                        image ? 
+                                        <img className="w-full" src={URL.createObjectURL(image)} alt="" />:
+                                        <img src="/images/icons/galerie.svg" height={70} width={70} alt="" />
+                                    }
                                 </div>
-                                <label htmlFor="input-image" className="absolute bottom-1 right-1 rounded-full w-[25px] h-[25px] bg-gray-300">
+                                <label htmlFor="input-image" className="absolute bottom-1 right-1 rounded-full w-[25px] h-[25px] flex justify-center items-center bg-gray-500">
+                                    <img height={15} width={15} src="/images/icons/crayon.svg" alt="" />
                                     <input id="input-image" type="file" hidden onChange={imageSelectionEventHandler} />
                                 </label>
                             </div>

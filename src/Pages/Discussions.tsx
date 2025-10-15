@@ -43,7 +43,7 @@ export default function Discussions() {
       }).then(()=>{
       });
     } else {
-      alert("select a discussion first");
+      snackBarManager.notifyUser({type: "INFO", value: "No discussion selected"})
     }
   };
 

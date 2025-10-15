@@ -10,6 +10,9 @@ type TopbarProps = {
 export default function Topbar(props: React.HTMLAttributes<HTMLDivElement> & TopbarProps){
     const { title , children} = props;
     const { user } = useContext(Context);
+    const logout = ()=>{
+      alert("logout button")
+    }
     return (
       <div
         {...props}
@@ -23,7 +26,7 @@ export default function Topbar(props: React.HTMLAttributes<HTMLDivElement> & Top
         </div>
         <div className="flex-1">{children}</div>
         <div className="flex items-center">
-          <Warning message="Your session is about to be disconnected !" />
+          <Warning accept={logout}  message="You are about to logout, procceed anyway ?" />
         </div>
         <div className="p-1 flex justify-center items-center">
           <div className="p-2 flex justify-center items-center bg-gray-800 rounded-lg text-white">
