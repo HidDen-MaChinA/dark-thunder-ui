@@ -7,13 +7,15 @@ import { SimplifiedUser, SimplifiedUserFriend } from "../@types/User"
 import { Friendship } from "../@types/Friendships"
 import { UserFriendshipProvider } from "../Providers/UserFriendshipProvider"
 import AddFriendsTopBar from "../Components/Discussions/AddFriendsTopBar"
+import { useSnackBarManager } from "../hooks/useSnackBarManager"
+import { SnackBarProvider } from "../Components/Snackbar"
 
 export default function FriendsManagement(){
-    const context = useContext(Context)
     const [friends, setFriends] = useState<SimplifiedUserFriend[]>([]);
     const [receivedFriendships, setReceivedFriendships] = useState<Friendship[]>([])
     const [sentFriendships, setSentFriendships] = useState<Friendship[]>([])
     const [shouldUpdate, setShouldUpdate] = useState([])
+    const snackBarManager = useSnackBarManager()
 
     useEffect(()=>{
         UserProvider.getFriends().then((res)=>{
@@ -24,13 +26,14 @@ export default function FriendsManagement(){
     }, [shouldUpdate])
     return (
       <div>
+        <SnackBarProvider />
         <Topbar title="Friendships Management">
-            <div className="w-full flex justify-center pr-[7%]">
+            <div className="w-full h-full flex justify-center items-center pr-[7%]">
                 <AddFriendsTopBar />
             </div>
         </Topbar>
         <div className="flex w-full gap-3 p-3">
-          <div className="flex-1 border p-3">
+          <div className="flex-1 rounded-xl border p-3">
             <h1 className="text-xl mb-3">Friends</h1>
             <UsersList>
               {friends.map((friend) => (
@@ -40,19 +43,20 @@ export default function FriendsManagement(){
                           UserFriendshipProvider.delete({friendship_id: friend.friendship_id})
                             .then(()=>{
                               setShouldUpdate([])
+                              snackBarManager.notifyUser({type: "INFO", value: `${friend.username} is no longer your friend.`})
                             })
                         },
                         text: {
-                            color: "white",
+                            color: "black",
                             value: "unfriend"
                         },
-                        bgColor: "red"
+                        bgColor: "#dddddd"
                     }
                 ]} />
               ))}
             </UsersList>
           </div>
-          <div className="flex-1 border p-3">
+          <div className="flex-1 rounded-xl border p-3">
             <h1 className="text-xl mb-3">Received Friendships</h1>
             <UsersList>
               {receivedFriendships.map((friendship) => (
@@ -62,31 +66,35 @@ export default function FriendsManagement(){
                           UserFriendshipProvider.allow({
                             friendship_id:friendship.id
                           })
+                          .then(()=>{
+                            setShouldUpdate([])
+                            snackBarManager.notifyUser({type: "INFO", value: `You are now friend with ${friendship.sender_user.username}.`})
+                          })
                         },
                         text: {
                             color: "white",
                             value: "allow"
                         },
-                        bgColor: "green"
+                        bgColor: "#22283f"
                     }
                 ]} />
               ))}
             </UsersList>
           </div>
-          <div className="flex-1 border p-3">
+          <div className="flex-1 border rounded-xl p-3">
             <h1 className="text-xl mb-3">Sent Friendships</h1>
             <UsersList>
               {sentFriendships.map((friendship) => (
-                <UsersListItem name={friendship.receiver_user.username} buttons={[
+                <UsersListItem img={friendship.receiver_user.pfp} name={friendship.receiver_user.username} buttons={[
                     {
                         clickEventHandler: ()=>{
 
                         },
                         text: {
                             color: "white",
-                            value: "unfriend"
+                            value: "cancel"
                         },
-                        bgColor: "red"
+                        bgColor: "#333333"
                     }
                 ]} />
               ))}

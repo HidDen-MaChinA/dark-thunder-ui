@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 export type buttonInfo = {
   bgColor?: string;
   text: {
@@ -15,9 +17,12 @@ type UsersListItemPropstype= {
 export function UsersListItem(props: UsersListItemPropstype) {
   const { name, buttons, img } = props;
   return (
-    <div className="flex items-center px-2 py-2 rounded-lg hover:bg-gray-100">
-      <div className="relative w-[45px] h-[45px] rounded-full border">
-        <img src={img} className="w-full h-full rounded-full" alt="" />
+    <div className="flex items-center px-2 py-2 rounded-lg hover:bg-[#33333306]">
+      <div className="relative flex justify-center items-center w-[45px] h-[45px] rounded-full border">
+        {
+          img ? <img src={img} className="w-full h-full rounded-full" alt="" />:
+          <img height={35} width={35} src="/images/icons/utilisateur.svg" alt="" />
+        }
       </div>
       <div
         style={{ flex: "1 1 0" }}

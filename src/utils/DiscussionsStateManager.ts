@@ -45,7 +45,6 @@ export const useDiscussionsStore = create<DiscussionsStoreType>((set)=>({
                 const index = state.discussions.findIndex(_=>_.id === discussion.id);
                 return index < 0;
             })
-            console.log(notInside)
             const newState = {...state}
             const mapper = new DiscussionMapper();
             const mappedNotInside = notInside.map(mapper.discussionToDiscussionStoreDiscussion);
@@ -72,10 +71,11 @@ export const useDiscussionsStore = create<DiscussionsStoreType>((set)=>({
                 callback()
                 return state;
             }
-            const newState = {...state};
-            const newStatesCurrentDiscussionMessage = newState.discussions[discussionIndex].messages;
-            const newMessages = [...mergeMessages(newStatesCurrentDiscussionMessage, messages)];
-            newState.discussions[discussionIndex].messages = newMessages;
+            let newState = {...state};
+            // const newStatesCurrentDiscussionMessage = newState.discussions[discussionIndex].messages;
+            // const newMessages = mergeMessages(newStatesCurrentDiscussionMessage, messages.sort((a,b)=>b.id - a.id));
+            newState.discussions[discussionIndex].messages = messages;
+            // console.log(newState)
             return newState;
         })
     }
@@ -89,20 +89,19 @@ function mergeMessages(olds: Message[], news: Message[]){
     if(news.length === 0){
         return olds
     }
-    const lastMessageRecorded = olds[olds.length - 1];
+    const lastMessageRecorded = olds[0];
     let index = 0;
     for(let i=0;i<news.length;i++){
         if(news[i].id <= lastMessageRecorded.id){
-            console.log(news[i]);
             index = i;
             break;
         }
     }
-    const newMessagesRecorded = news.slice(0, index);
-    if(newMessagesRecorded.length === 0){
+    if(index === 0){
         return olds;
     }
+    const newMessagesRecorded = news.slice(0,index);
     const newMessages = [...olds]
-    newMessages.push(...newMessagesRecorded);
-    return newMessages;
+    newMessages.unshift(...newMessagesRecorded);
+    return newMessages.sort((a,b)=>a.id-b.id);
 }

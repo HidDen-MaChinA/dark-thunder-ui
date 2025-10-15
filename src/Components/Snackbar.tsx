@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { SnackBarMessageType, useSnackBarStore } from "../utils/SnackBarStateManager";
 
-export function SnackBarProvider(props: {children: ReactNode}){
+export function SnackBarProvider(){
     const snackBarStore = useSnackBarStore();
     const onDeleteClickEventHandler = ()=>{
         snackBarStore.flushMessages();
@@ -29,7 +29,6 @@ export function SnackBarProvider(props: {children: ReactNode}){
             </button>
           </div>
         )}
-        {props.children}
       </div>
     );
 }

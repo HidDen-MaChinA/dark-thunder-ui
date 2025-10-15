@@ -2,7 +2,7 @@ export default function useWebSocket(url: string) {
   return new WebSocketManager(url);
 }
 
-class WebSocketManager {
+export class WebSocketManager {
   private callback = (event: MessageEvent) => {
     console.log(event);
   };
@@ -32,7 +32,10 @@ class WebSocketManager {
     return this;
   }
 
-  openConnection() {
+  openConnection () {
+    if(this.socket !== null){
+      return this;
+    }
     const newSocket = new WebSocket(this.url);
     this.socket = newSocket;
     newSocket.addEventListener("message", this.callback);

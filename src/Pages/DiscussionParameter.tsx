@@ -9,6 +9,7 @@ import { SimplifiedUser } from "../@types/User";
 import { DiscussionMembershipProvider } from "../Providers/DiscussionsMembershipProvider";
 import { UserProvider } from "../Providers/UserProviders";
 import { UsersList, UsersListItem } from "../Components/UsersList";
+import Topbar from "../Components/Discussions/Topbar";
 
 export default function DiscussionParameter() {
   const navigate = useNavigate();
@@ -43,6 +44,8 @@ export default function DiscussionParameter() {
   }, [shouldFetch]);
   return (
     <Loading loading={currentDiscussion === null}>
+      <Topbar title="Update Discussion">
+      </Topbar>
       {currentDiscussion && (
         <div className="">
           <div className="flex items-center">
@@ -162,7 +165,7 @@ function MemberList(props: {
                   buttons={[
                     {
                       text: {
-                        color: "white",
+                        color: "black",
                         value: "Kick",
                       },
                       clickEventHandler: () => {
@@ -173,7 +176,7 @@ function MemberList(props: {
                           setShouldFetch([]);
                         });
                       },
-                      bgColor: "red",
+                      bgColor: "#eeeeee",
                     },
                   ]}
                 />
@@ -203,14 +206,14 @@ function AddFriends(props: {
                 <UsersListItem
                   key={friend.id + index}
                   name={friend.username}
-                  img={"/images/icons/web.svg"}
+                  img={friend.pfp}
                   buttons={[
                     {
                       text: {
                         color: "white",
                         value: "Add",
                       },
-                      bgColor: "blue",
+                      bgColor: "#22283f",
                       clickEventHandler: () => {
                         DiscussionMembershipProvider.create({
                           permission: "write",

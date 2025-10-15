@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import Context from "../AuthContext";
 import Topbar from "../Components/Discussions/Topbar";
 import Sidebar from "../Components/Discussions/Sidebar";
@@ -10,10 +10,11 @@ import { Discussion as DiscussionType } from "../@types/Discussion";
 import Loading from "../Components/Loading";
 import { MessageProvider } from "../Providers/MessageProvider";
 import { blobToObject } from "../utils/ArrayBufferToObject";
-import useWebSocket from "../hooks/useWebSocket";
+import useWebSocket, { WebSocketManager } from "../hooks/useWebSocket";
 import { useDiscussionsManager } from "../services/DiscussionsManager";
 import { useDiscussionsStore } from "../utils/DiscussionsStateManager";
 import { useSnackBarManager } from "../hooks/useSnackBarManager";
+import { SnackBarProvider } from "../Components/Snackbar";
 
 export default function Discussions() {
   const currentUser = useContext(Context);
@@ -48,7 +49,6 @@ export default function Discussions() {
   };
 
 
-  const socketManager = useWebSocket("http://localhost:7000");
   const eventListener = (event:MessageEvent) => {
     blobToObject(event.data).then((event: {event: string})=>{
      const eventPayload = event.event.split(":")
@@ -61,20 +61,21 @@ export default function Discussions() {
       // discussionsManager.discussionsFetch(page.page);
     })
   }
+  const socketManager = useMemo<WebSocketManager>(()=>{return useWebSocket("http://localhost:7000")}, []);
   useEffect(() => {
     if(!discussionsPromiseDone){
       discussionsManager.discussionsFetch(page.page).then(()=>{
         setDiscussionsPromiseDone(true);
-        snackBarManager.notifyUser({value: "discussions fetched", type: "INFO"})
       });
       socketManager.openConnection().onMessage(eventListener);
     }
     return ()=>{
       socketManager.removeSocket();
     }
-  }, [store]);
+  }, []);
   return (
     <div className="w-[100vw] flex flex-col h-[100vh] overflow-hidden">
+    <SnackBarProvider />
       <Topbar title="Discussions">
         <div className="flex bg-white flex-1 justify-end gap-3 h-full items-center">
           <a

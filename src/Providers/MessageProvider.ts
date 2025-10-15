@@ -38,7 +38,7 @@ export const MessageProvider : MessageProviderType= {
     },
 
     getLatestMessages: async (arg)=>{
-        const list = await AxiosClient.get(`/api/discussion/messages?page=${arg.page}&discussion_id=${arg.discussion_id}`).then(_=>_.data);
+        let list = await AxiosClient.get(`/api/discussion/messages?page=${arg.page}&discussion_id=${arg.discussion_id}`).then(_=>_.data);
         return {list: list, discussion_id: arg.discussion_id}
     }
 } 

@@ -23,9 +23,15 @@ export default function Messages(props: MessagePropsType) {
           setCurrentDiscussion(newtemp)
         }
       });
-      setCurrentDiscussion(temp);
     }
   }, [discussion])
+  
+  useEffect(()=>{
+    if(discussion){
+        const newtemp = store.discussions.find((_) => _.id === discussion.id);
+        setCurrentDiscussion(newtemp)
+    }
+  }, [store])
 
   if(discussion){
     return (
@@ -50,7 +56,6 @@ export default function Messages(props: MessagePropsType) {
               }
             )
             .map((items, index) => (
-              <>
                 <Message
                   message={items.value}
                   pfp={items.user.pfp}
@@ -61,7 +66,6 @@ export default function Messages(props: MessagePropsType) {
                   date={new Date(items.updated_at)}
                   key={"message-id:"+items.id+"-index-" + index}
                 />
-              </>
             ))
         )}
       </div>

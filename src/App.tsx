@@ -34,9 +34,7 @@ const App = (): React.ReactElement => {
           path="/discussions"
           Component={() => (
             <ProtectedRoute>
-              <SnackBarProvider>
-                <Messages />
-              </SnackBarProvider>
+              <Messages />
             </ProtectedRoute>
           )}
         ></Route>
