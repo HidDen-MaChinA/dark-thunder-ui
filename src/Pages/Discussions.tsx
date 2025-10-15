@@ -79,10 +79,12 @@ export default function Discussions() {
         <div className="flex bg-white flex-1 justify-end gap-3 h-full items-center">
           <a
             href="/user/friends/management"
-            className="relative w-[40px] p-1 h-[40px] flex justify-center items-center rounded-full bg-blue-400"
+            className="relative w-[40px] p-1 h-[40px] flex justify-center items-center rounded-full bg-gray-800"
           >
             <img
-              src="/images/icons/contact-phone.svg"
+              src="/images/icons/population-globe.svg"
+              height={40}
+              width={40}
               className="w-full h-full"
               alt=""
             />

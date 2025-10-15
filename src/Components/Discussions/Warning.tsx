@@ -12,20 +12,24 @@ export default function Warning(props: WarningProps){
   const {accept, message, reject} = props
     return (
       <Modal
-        button={<div className="h-[35px] w-[35px] bg-gray-800 rounded-full"></div>}
+        button={
+          <button>
+            <div className="h-[40px] flex justify-center items-center w-[40px] bg-gray-800 rounded-full">
+              <img src="/images/icons/user-logout.svg" height={25} width={25} alt="" />
+            </div>
+          </button>
+        }
       >
-        <div className="flex flex-col">
-          <div>
-            {message}
+        <div className="flex flex-col gap-3">
+          <div>{message}</div>
+          <div className="w-full flex justify-center">
+            <hr className="w-[90%]" />
           </div>
-          <hr className="w-[90%]"/>
           <div className="w-full gap-3 flex justify-end">
             <Button width="max-content" inverted>
-              YES !
+              Confirm
             </Button>
-            <Button width="max-content">
-              NO !!!
-            </Button>
+            <Button width="max-content">Cancel</Button>
           </div>
         </div>
       </Modal>

@@ -15,12 +15,15 @@ export default function Topbar(props: React.HTMLAttributes<HTMLDivElement> & Top
         {...props}
         className="flex pr-4 relative z-30 gap-2 shadow-md border-b sticky bg-white top-0 w-full"
       >
+        <div className="w-[55px] ml-3 flex items-center">
+          <img src="/images/logo.png" height={55} width={55} alt="logo" />
+        </div>
         <div className="flex items-center">
           <h2 className="text-2xl text-gray-800 p-2 px-5">{title}</h2>
         </div>
         <div className="flex-1">{children}</div>
         <div className="flex items-center">
-          <Warning message="are you sure you want to do that bro ?" />
+          <Warning message="Your session is about to be disconnected !" />
         </div>
         <div className="p-1 flex justify-center items-center">
           <div className="p-2 flex justify-center items-center bg-gray-800 rounded-lg text-white">
