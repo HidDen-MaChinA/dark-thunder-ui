@@ -51,7 +51,7 @@ export default function Button(
       }}
       className={`
         rounded-xl p-3 overflow-hidden py-2 relative
-        ${inverted ? "text-black bg-white border-black focus:text-white focus:bg-black hover:text-white hover:bg-black" : "text-white focus:border-black hover:border-black bg-black hover:text-black focus:text-black focus:bg-white hover:bg-white"}
+        ${inverted ? "text-black bg-white border-black focus:text-white focus:bg-gray-800 hover:text-white hover:bg-gray-800" : "text-white focus:border-black hover:border-black bg-gray-800 hover:text-black focus:text-black focus:bg-white hover:bg-white"}
         transition-[500ms] relative border
       `}
       style={{

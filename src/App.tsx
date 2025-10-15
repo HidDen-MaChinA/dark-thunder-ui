@@ -11,6 +11,7 @@ import Finalisation from "./Pages/Finalisation";
 import CreateDiscussion from "./Pages/CreateDiscussion";
 import DiscussionParameter from "./Pages/DiscussionParameter";
 import FriendsManagement from "./Pages/FriendsManagement";
+import { SnackBarProvider } from "./Components/Snackbar";
 
 const App = (): React.ReactElement => {
   return (
@@ -33,7 +34,9 @@ const App = (): React.ReactElement => {
           path="/discussions"
           Component={() => (
             <ProtectedRoute>
-              <Messages />
+              <SnackBarProvider>
+                <Messages />
+              </SnackBarProvider>
             </ProtectedRoute>
           )}
         ></Route>

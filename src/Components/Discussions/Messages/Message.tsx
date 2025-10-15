@@ -22,7 +22,7 @@ export default function Message(props: MessageProps){
         <div className="flex flex-col relative">
           <div className="flex gap-1" style={{ flexDirection: own ? "row-reverse" : "row" }}>
             {pfp && !own && (
-              <div className="h-[40px] mt-3 w-[40px] bg-black rounded-full">
+              <div className="h-[40px] mt-3 w-[40px] bg-gray-800 rounded-full">
                 <img src={pfp} alt="" className="rounded-full" />
               </div>
             )}

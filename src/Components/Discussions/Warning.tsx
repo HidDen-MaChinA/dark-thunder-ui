@@ -12,7 +12,7 @@ export default function Warning(props: WarningProps){
   const {accept, message, reject} = props
     return (
       <Modal
-        button={<div className="h-[35px] w-[35px] bg-black rounded-full"></div>}
+        button={<div className="h-[35px] w-[35px] bg-gray-800 rounded-full"></div>}
       >
         <div className="flex flex-col">
           <div>

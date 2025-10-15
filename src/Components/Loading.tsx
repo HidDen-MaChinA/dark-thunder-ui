@@ -18,7 +18,7 @@ export default function Loading(props: LoadingPropsType){
                     <div className="spin-animated w-[80px] overflow-hidden relative h-[80px] flex justify-center items-center rounded-full">
                         <div className="absolute flex w-full h-full">
                             <div className="bg-white flex-1"></div>
-                            <div className="bg-black flex-1"></div>
+                            <div className="bg-gray-800 flex-1"></div>
                         </div>
                         <div className="w-[70px] h-[70px] z-30 rounded-full bg-white">
                         </div>

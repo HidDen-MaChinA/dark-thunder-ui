@@ -22,7 +22,7 @@ export default function Navbar(){
           <a href="#contact" className="">Contacts</a>
         </div>
         <div>
-          <a href="/user/login" className="bg-black text-white p-2 rounded-lg shadow-md">Try DarkThunder</a>
+          <a href="/user/login" className="bg-gray-800 text-white p-2 rounded-lg shadow-md">Try DarkThunder</a>
         </div>
       </div>
     );

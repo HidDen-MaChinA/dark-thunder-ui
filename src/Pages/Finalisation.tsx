@@ -107,7 +107,7 @@ export default function Finalisation() {
               </div>
               <div>
                 <label
-                  className="border border-black block relative p-2 hover:bg-black hover:text-white transition-[500ms] rounded-lg"
+                  className="border border-black block relative p-2 hover:bg-gray-800 hover:text-white transition-[500ms] rounded-lg"
                   htmlFor="FillUserInformationPFP"
                 >
                   <input

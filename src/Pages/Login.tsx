@@ -51,7 +51,7 @@ export default function Login() {
             <h1 className="w-full text-center text-gray-800  pt-3 text-3xl">Dark Thunder</h1>
           </div>
         </div>
-        <div className="w-1/2 flex bg-black justify-center items-center">
+        <div className="w-1/2 flex bg-gray-800 justify-center items-center">
           <form action="" onSubmit={submitEventHandler}>
             <div className="px-5 bg-white shadow-lg rounded-xl flex-col shadow-gray-600 flex gap-2">
               <h1 className="text-2xl w-full text-center py-4">Login</h1>

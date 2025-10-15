@@ -13,10 +13,12 @@ import { blobToObject } from "../utils/ArrayBufferToObject";
 import useWebSocket from "../hooks/useWebSocket";
 import { useDiscussionsManager } from "../services/DiscussionsManager";
 import { useDiscussionsStore } from "../utils/DiscussionsStateManager";
+import { useSnackBarManager } from "../hooks/useSnackBarManager";
 
 export default function Discussions() {
   const currentUser = useContext(Context);
   const store = useDiscussionsStore();
+  const snackBarManager = useSnackBarManager()
   const discussionsManager = useDiscussionsManager();
   const [isOpened, setIsOpened] = useState(false);
   const [selectedDiscussion, setSelectedDiscussion] =
@@ -63,6 +65,7 @@ export default function Discussions() {
     if(!discussionsPromiseDone){
       discussionsManager.discussionsFetch(page.page).then(()=>{
         setDiscussionsPromiseDone(true);
+        snackBarManager.notifyUser({value: "discussions fetched", type: "INFO"})
       });
       socketManager.openConnection().onMessage(eventListener);
     }

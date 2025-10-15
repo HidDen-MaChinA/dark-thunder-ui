@@ -28,7 +28,7 @@ export default function Topbar(props: React.HTMLAttributes<HTMLDivElement> & Top
               Connected as
             </p>
             <span className="w-[150px] items-center ml-1 p-1 bg-white text-center rounded-xl text-black  flex flex-row">
-              <div className="w-[35px] h-[35px] overflow-hidden relative rounded-full bg-black">
+              <div className="w-[35px] h-[35px] overflow-hidden relative rounded-full bg-gray-800">
                 <img className="w-full" src={user.pfp} />
               </div>
               <p className="w-[100px] text-ellipsis whitespace-nowrap overflow-hidden">
