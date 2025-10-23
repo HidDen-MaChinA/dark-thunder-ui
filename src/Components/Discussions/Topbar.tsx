@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import Warning from "./Warning";
 import Context from "../../AuthContext";
+import { AuthProvider } from "../../Providers/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 
 type TopbarProps = {
@@ -10,8 +12,12 @@ type TopbarProps = {
 export default function Topbar(props: React.HTMLAttributes<HTMLDivElement> & TopbarProps){
     const { title , children} = props;
     const { user } = useContext(Context);
+    const navigate = useNavigate();
     const logout = ()=>{
-      alert("logout button")
+      AuthProvider.logout().then(()=>{
+        localStorage.removeItem("dt-token-session-auth")
+        navigate("/user/login")
+      });
     }
     return (
       <div

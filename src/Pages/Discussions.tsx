@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import Context from "../AuthContext";
 import Topbar from "../Components/Discussions/Topbar";
 import Sidebar from "../Components/Discussions/Sidebar";
@@ -15,6 +15,7 @@ import { useDiscussionsManager } from "../services/DiscussionsManager";
 import { useDiscussionsStore } from "../utils/DiscussionsStateManager";
 import { useSnackBarManager } from "../hooks/useSnackBarManager";
 import { SnackBarProvider } from "../Components/Snackbar";
+import { RealtimeConnexionManager, useRealtimeConnexionManager } from "../services/DarkthunderRealtimeConnexionManager";
 
 export default function Discussions() {
   const currentUser = useContext(Context);
@@ -61,16 +62,16 @@ export default function Discussions() {
       // discussionsManager.discussionsFetch(page.page);
     })
   }
-  const socketManager = useMemo<WebSocketManager>(()=>{return useWebSocket("http://localhost:7000")}, []);
+  const realtimeConnexionManager = useMemo<RealtimeConnexionManager>(()=>{return useRealtimeConnexionManager("ws://localhost:7000")}, [currentUser]);
   useEffect(() => {
     if(!discussionsPromiseDone){
       discussionsManager.discussionsFetch(page.page).then(()=>{
         setDiscussionsPromiseDone(true);
       });
-      socketManager.openConnection().onMessage(eventListener);
+      realtimeConnexionManager.attemptConnexion(currentUser.user.daily_discussions_token).onMessage(eventListener);
     }
     return ()=>{
-      socketManager.removeSocket();
+      realtimeConnexionManager.cutConnexion();
     }
   }, []);
   return (

@@ -8,6 +8,7 @@ export class WebSocketManager {
   };
   private socket: WebSocket | null = null;
   private url: string = ""
+  private urlToBeUsed: string = ""
 
   onMessage(callback: (event: MessageEvent) => void) {
     if(this.socket){
@@ -24,9 +25,14 @@ export class WebSocketManager {
     }
   }
   
+  withQuery(name:string, value:string) {
+    this.urlToBeUsed = this.url + `?${name}=${value}`; 
+    return this
+  }
+
   refreshConnection() {
     this.removeSocket();
-    const newSocket = new WebSocket(this.url);
+    const newSocket = new WebSocket(this.urlToBeUsed);
     newSocket.addEventListener("message", this.callback);
     this.socket = newSocket;
     return this;
@@ -36,7 +42,7 @@ export class WebSocketManager {
     if(this.socket !== null){
       return this;
     }
-    const newSocket = new WebSocket(this.url);
+    const newSocket = new WebSocket(this.urlToBeUsed);
     this.socket = newSocket;
     newSocket.addEventListener("message", this.callback);
     this.socket.onerror = ()=>{
@@ -47,5 +53,6 @@ export class WebSocketManager {
 
   constructor(url: string) {
     this.url = url;
+    this.urlToBeUsed = url;
   }
 }
